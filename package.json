@@ -1,5 +1,5 @@
 {
-  "name": "tickerboardvue",
+  "name": "apextrader",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -14,12 +14,10 @@
     "@heroicons/vue": "^2.0.18",
     "animejs": "^3.2.1",
     "apexcharts": "^3.40.0",
-    "fitty": "^2.3.6",
     "pinia": "^2.0.36",
     "sass": "^1.62.1",
     "vue": "^3.3.2",
     "vue3-apexcharts": "^1.4.1",
-    "vuetify": "^3.3.2",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
