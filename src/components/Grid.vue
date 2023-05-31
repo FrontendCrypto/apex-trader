@@ -8,6 +8,7 @@ export default {
     },
     data() {
         return {
+            tab: null,
             options: {
                 chart: {
                     type: 'candlestick',
@@ -182,61 +183,161 @@ export default {
 
 <template>
     <div class="grid">
-        <div class="order-book">
-            <p>Order book</p>
+
+        <div class="topbar">
+            <div class="topbar-item topbar-logo">
+                <small>Logo</small>
+            </div>
+            <div class="topbar-item">
+                <p>$ 24.875,93</p>
+            </div>
+            <div class="topbar-item">
+                <p>-3.67% <span>Change 24h</span></p>
+            </div>
+            <div class="topbar-item">
+                <p>$ 6.874.214 <span>Volume 24h</span></p>
+            </div>
         </div>
-        <div class="trades">
-            <p>Trades</p>
+
+        <div class="grid-item operative">
+            <v-card class="fill-height">
+                <v-tabs v-model="tab" grow>
+                    <v-tab value="buy">Buy</v-tab>
+                    <v-tab value="sell">Sell</v-tab>
+                </v-tabs>
+
+                <v-card-text>
+                    <v-window v-model="tab">
+                        <v-window-item value="buy">
+                            One
+                        </v-window-item>
+
+                        <v-window-item value="sell">
+                            Two
+                        </v-window-item>
+                    </v-window>
+                </v-card-text>
+            </v-card>
         </div>
-        <div class="operative">
-            <p>Operative</p>
+
+        <div class="grid-item order-book">
+            <div>
+                <p>Order book</p>
+            </div>
+            <div>
+                <p>Depth chart</p>
+            </div>
         </div>
-        <div class="chart">
-            <VueApexCharts ref="chart" :options="options" :series="options.series" class="chart" />
+        <!-- <div class="trades">
+                                                <p>Trades</p>
+                                            </div> -->
+
+        <div class="grid-item chart">
+            <p>Chart</p>
+            <!-- <VueApexCharts ref="chart" :options="options" :series="options.series" class="chart" /> -->
         </div>
-        <div class="tabs">
+        <div class="grid-item tabs">
             <p>Tabs</p>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
+$surface: #131722;
+$surfaceHight: #0b0e14;
+$surfaceContent: rgb(204, 208, 220);
+$surfaceContentLow: rgb(117, 134, 150);
+
+
+.fill-height {
+    height: 100%;
+}
+
 .grid {
     display: grid;
-    grid-template-columns: 1fr 300px 300px;
-    grid-template-rows: 1fr 300px;
-    background-color: black;
+    grid-template-columns: 300px 300px 1fr;
+    grid-template-rows: 64px 1fr 250px;
     width: 100vw;
     height: 100vh;
-    max-height: 100%;
+    gap: 4px;
+
+    .grid-item {
+        // padding: 8px;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        color: $surfaceContent
+    }
+}
+
+.topbar {
+    grid-row: 1;
+    grid-column: 1/4;
+    background-color: $surface;
+
+    display: flex;
+    flex-direction: row;
+
+    .topbar-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        color: $surfaceContent;
+        border-color: rgb(38, 43, 56);
+        border-width: 0 1px 0 0;
+        border-style: solid;
+        height: 100%;
+
+        span {
+            color: $surfaceContentLow
+        }
+
+        &.topbar-logo {
+            width: 64px;
+
+            color: $surfaceContentLow
+        }
+    }
+
+
 }
 
 .order-book {
-    grid-row: 1;
+    grid-row: 2/4;
     grid-column: 2;
-    background-color: red;
+    background-color: $surface;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+    gap: 4px;
+
+    >div {
+        background-color: $surfaceHight;
+    }
 }
 
-.trades {
-    grid-row: 1;
-    grid-column: 3;
-    background-color: blue;
-}
+// .trades {
+//     grid-row: 1;
+//     grid-column: 3;
+//     background-color: $surface;
+// }
 
 .chart {
-    grid-column: 1;
-    grid-row: 1;
-    background-color: green;
+    grid-column: 3;
+    grid-row: 2;
+    background-color: $surface;
 }
 
 .tabs {
-    grid-row: 2;
-    grid-column: 1;
-    background-color: violet;
+    grid-row: 3;
+    grid-column: 3/4;
+    background-color: $surface;
 }
 
 .operative {
-    grid-row: 2;
-    grid-column: 2;
+    grid-row: 2/4;
+    grid-column: 1;
+    background-color: $surface;
 }
 </style>
