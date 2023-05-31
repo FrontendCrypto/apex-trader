@@ -13,4 +13,6 @@ components: {
   </div>
 </template>
 
-<style></style>
+<style>
+@import './assets/base.css'
+</style>
