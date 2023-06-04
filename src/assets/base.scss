@@ -1,0 +1,13 @@
+@import './variables.scss';
+
+body {
+  background-color: $background;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Roboto Mono', sans-serif;
+}
+
+.apexcharts-canvas {
+  height: 100% !important;
+}
