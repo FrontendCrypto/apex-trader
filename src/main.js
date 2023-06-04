@@ -11,12 +11,13 @@ const vuetify = createVuetify({
     components,
     directives
 })
+const pinia = createPinia()
 const app = createApp(App)
 
 app.config.debug = true
 app.config.devtools = true
 
-app.use(createPinia())
+app.use(pinia)
 app.use(store)
 app.use(vuetify)
 app.mount('#app')
