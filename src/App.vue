@@ -1,9 +1,19 @@
-<script setup>
+<script>
 import Grid from './components/Grid.vue'
+import WebFont from 'webfontloader'
 
-// import { Cog6ToothIcon } from '@heroicons/vue/24/solid'
-components: {
-  Grid
+export default {
+  // import { Cog6ToothIcon } from '@heroicons/vue/24/solid'
+  components: {
+    Grid
+  },
+  mounted() {
+    WebFont.load({
+      google: {
+        families: ['Roboto Mono:100,200,300,400']
+      }
+    })
+  }
 }
 </script>
 
@@ -14,5 +24,4 @@ components: {
 </template>
 
 <style>
-@import './assets/base.css'
 </style>
