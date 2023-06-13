@@ -7,6 +7,15 @@ const store = createStore({
       orderbook: {
         bid: bid,
         ask: ask,
+      },
+      timeframe: {
+        selected: 24,
+        values: [1, 4, 12, 24]
+      },
+      price: {
+        currency: 'USD',
+        value: '27342',
+        change: '-3,67'
       }
     }
   },

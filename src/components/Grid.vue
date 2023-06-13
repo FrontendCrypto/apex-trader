@@ -1,13 +1,16 @@
 <script>
 import store from '../store'
 import Topbar from './Topbar.vue'
+import Tabs from './Tabs.vue'
 import Orderbook from './Orderbook.vue'
 import VueApexCharts from 'vue3-apexcharts'
+
 export default {
     components: {
         VueApexCharts,
         Orderbook,
-        Topbar
+        Topbar,
+        Tabs,
     },
     data() {
         return {
@@ -36,39 +39,22 @@ export default {
         </div>
 
         <div class="grid-item operative">
-            <!-- <v-card class="fill-height">
-            <v-tabs v-model="tab" grow>
-                <v-tab value="buy">Buy</v-tab>
-                    <v-tab value="sell">Sell</v-tab>
-                </v-tabs>
-
-                <v-card-text>
-                    <v-window v-model="tab">
-                        <v-window-item value="buy">
-                            One
-                        </v-window-item>
-
-                        <v-window-item value="sell">
-                            Two
-                        </v-window-item>
-                    </v-window>
-                </v-card-text>
-            </v-card> -->
+            <Tabs :expanded="true" :tabs="[{ name: 'Comprar', active: true }, { name: 'Vender', active: false }]" />
         </div>
 
         <div class="grid-item orderbook">
             <Orderbook />
         </div>
         <!-- <div class="trades">
-                                                        <p>Trades</p>
-                                                    </div> -->
+                                                                            <p>Trades</p>
+                                                                        </div> -->
 
         <div class="grid-item chart">
             <p>Chart</p>
             <!-- <VueApexCharts ref="chart" :options="options" :series="options.series" class="chart" /> -->
         </div>
-        <div class="grid-item tabs">
-            <p>Tabs</p>
+        <div class="grid-item tabs-section">
+            <Tabs :expanded="false" :tabs="[{ name: 'Open orders', active: true }, { name: 'Filled orders', active: false }]" />
         </div>
     </div>
 </template>
@@ -130,7 +116,7 @@ export default {
     background-color: $surface;
 }
 
-.tabs {
+.tabs-section {
     grid-row: 3;
     grid-column: 3/4;
     background-color: $surface;

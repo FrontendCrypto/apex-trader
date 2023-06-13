@@ -67,7 +67,7 @@ export const bid = [
   {
     price: 25000,
     size: 19.3,
-    amount: 100.0
+    amount: 45.0
   },
   {
     price: 25010,
@@ -77,12 +77,12 @@ export const bid = [
   {
     price: 25020,
     size: 19.3,
-    amount: 100.0
+    amount: 50.0
   },
   {
     price: 25030,
     size: 19.3,
-    amount: 100.0
+    amount: 10.0
   },
   {
     price: 25040,
@@ -92,7 +92,7 @@ export const bid = [
   {
     price: 25050,
     size: 19.3,
-    amount: 100.0
+    amount: 80.0
   },
   {
     price: 25060,
