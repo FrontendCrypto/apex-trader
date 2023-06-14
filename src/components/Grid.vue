@@ -2,6 +2,8 @@
 import store from '../store'
 import Topbar from './Topbar.vue'
 import Tabs from './Tabs.vue'
+import Trades from './Trades.vue'
+import Operative from './Operative.vue'
 import Orderbook from './Orderbook.vue'
 import VueApexCharts from 'vue3-apexcharts'
 
@@ -11,6 +13,8 @@ export default {
         Orderbook,
         Topbar,
         Tabs,
+        Operative,
+        Trades
     },
     data() {
         return {
@@ -39,22 +43,30 @@ export default {
         </div>
 
         <div class="grid-item operative">
-            <Tabs :expanded="true" :tabs="[{ name: 'Comprar', active: true }, { name: 'Vender', active: false }]" />
+            <Operative>
+
+            </Operative>
         </div>
 
         <div class="grid-item orderbook">
             <Orderbook />
         </div>
         <!-- <div class="trades">
-                                                                            <p>Trades</p>
-                                                                        </div> -->
+                                                                                                            <p>Trades</p>
+                                                                                                        </div> -->
 
         <div class="grid-item chart">
             <p>Chart</p>
             <!-- <VueApexCharts ref="chart" :options="options" :series="options.series" class="chart" /> -->
         </div>
         <div class="grid-item tabs-section">
-            <Tabs :expanded="false" :tabs="[{ name: 'Open orders', active: true }, { name: 'Filled orders', active: false }]" />
+            <Tabs :expanded="false"
+                :tabs="[{ name: 'Open orders', active: true }, { name: 'Filled orders', active: false }]">
+            </Tabs>
+        </div>
+
+        <div class="grid-item trades">
+            <Trades />
         </div>
     </div>
 </template>
@@ -62,6 +74,39 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/variables.scss';
 
+.order-type {
+    display: flex;
+    flex-direction: row;
+
+    div,
+    label {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        span {
+            color: $surfaceContent;
+        }
+    }
+
+    input {
+        display: none;
+
+        &:checked {
+            &+label {
+                width: 100%;
+                height: 48px;
+
+                span {
+                    color: $surfaceContentHight;
+                }
+            }
+        }
+
+    }
+}
 
 .fill-height {
     height: 100%;
@@ -69,8 +114,8 @@ export default {
 
 .grid {
     display: grid;
-    grid-template-columns: 300px 350px 1fr;
-    grid-template-rows: 72px 1fr 250px;
+    grid-template-columns: 300px 300px 1fr 300px;
+    grid-template-rows: 72px 1fr 300px;
     width: 100vw;
     height: 100vh;
     gap: 4px;
@@ -86,12 +131,12 @@ export default {
 
 .topbar {
     grid-row: 1;
-    grid-column: 1/4;
+    grid-column: 1/5;
     background-color: $surface;
 }
 
 .orderbook {
-    grid-row: 2/4;
+    grid-row: 2/5;
     grid-column: 2;
     background-color: $surface;
     // display: grid;
@@ -126,5 +171,12 @@ export default {
     grid-row: 2/4;
     grid-column: 1;
     background-color: $surface;
+}
+
+.trades {
+    grid-row: 2/4;
+    grid-column: 4;
+    background-color: $surface;
+    overflow-y: scroll;
 }
 </style>
