@@ -16,7 +16,7 @@ export default {
             return store.state.change
         },
         currency() {
-            return store.state.price.currency
+            return store.state.currency
         },
         formattedPrice() {
             const usd = new Intl.NumberFormat('en-US', {

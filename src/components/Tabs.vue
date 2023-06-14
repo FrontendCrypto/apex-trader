@@ -6,7 +6,7 @@
             </button>
         </div>
         <div class="content">
-            <span>Is content</span>
+            <slot name="content"></slot>
         </div>
     </div>
 </template>
@@ -67,6 +67,7 @@ export default {
     background-color: transparent;
     border: 0;
     border-bottom: 3px solid transparent;
+
     &:hover {
         background-color: rgba(255, 255, 255, 0.05);
     }

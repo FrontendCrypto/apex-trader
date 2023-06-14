@@ -1,7 +1,10 @@
 <template>
     <div class="topbar">
         <div class="topbar-item topbar-logo">
-            <small>Logo</small>
+            <small>ApexTrader</small>
+        </div>
+        <div class="topbar-item">
+            {{ asset }}-{{ counterpart }}
         </div>
         <div class="topbar-item">
             <span class="title">Price ({{ currency }})</span>
@@ -30,10 +33,16 @@ export default {
     },
     computed: {
         currency() {
-            return store.state.price.currency
+            return store.state.currency
         },
         timeframe() {
             return store.state.timeframe.selected
+        },
+        counterpart(){
+            return store.state.counterpart
+        },
+        asset(){
+            return store.state.asset
         }
     }
 }
@@ -53,7 +62,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0 16px;
+    padding: 0 24px;
     color: $surfaceContent;
     border-color: rgb(38, 43, 56);
     border-width: 0 1px 0 0;
@@ -73,7 +82,7 @@ export default {
 }
 
 .topbar-logo {
-    width: 64px;
+    padding: 0 32px;
     color: $surfaceContentLow
 }
 </style>
