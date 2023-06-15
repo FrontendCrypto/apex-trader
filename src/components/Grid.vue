@@ -5,6 +5,7 @@ import Tabs from './Tabs.vue'
 import Trades from './Trades.vue'
 import Operative from './Operative.vue'
 import Orderbook from './Orderbook.vue'
+import PairSelector from './PairSelector.vue'
 import VueApexCharts from 'vue3-apexcharts'
 
 export default {
@@ -14,7 +15,8 @@ export default {
         Topbar,
         Tabs,
         Operative,
-        Trades
+        Trades,
+        PairSelector,
     },
     data() {
         return {
@@ -36,6 +38,7 @@ export default {
 </script>
 
 <template>
+    <PairSelector />
     <div class="grid">
 
         <div class="topbar">
@@ -52,8 +55,8 @@ export default {
             <Orderbook />
         </div>
         <!-- <div class="trades">
-                                                                                                            <p>Trades</p>
-                                                                                                        </div> -->
+                                                                                                                <p>Trades</p>
+                                                                                                            </div> -->
 
         <div class="grid-item chart">
             <p>Chart</p>
