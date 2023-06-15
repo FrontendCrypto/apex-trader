@@ -5,7 +5,10 @@ import { trades } from './data/trades'
 const store = createStore({
   state() {
     return {
-      currency: 'USD',
+      pairSelector: {
+        visible: false
+      },
+      baseCurrency: 'USD',
       asset: 'BTC',
       counterpart: 'USD',
       orderbook: {
@@ -21,16 +24,32 @@ const store = createStore({
         value: '27342',
         change: '-3,67'
       },
-      operative:{
+      operative: {
         type: 'buy'
       }
     }
   },
   getters: {
-
+    pairSelectorVisibility(state) {
+      return state.pairSelector.visible
+    },
+    baseCurrency(state) {
+      return state.baseCurrency
+    },
+    timeframe(state) {
+      return state.timeframe.selected
+    },
+    counterpart(state) {
+      return state.counterpart
+    },
+    asset(state) {
+      return state.asset
+    }
   },
   mutations: {
-
+    updatePairSelectorVisibility(state, value) {
+      state.pairSelector.visible = value
+    }
   }
 })
 

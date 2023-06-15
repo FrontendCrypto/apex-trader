@@ -4,45 +4,67 @@
             <small>ApexTrader</small>
         </div>
         <div class="topbar-item">
-            {{ asset }}-{{ counterpart }}
+            <button @click="this.pairSelector = true;">{{ pairAsset }}-{{ pairCounterpart }}</button>
         </div>
         <div class="topbar-item">
-            <span class="title">Price ({{ currency }})</span>
+            <span class="title">Price ({{ selectedBaseCurrency }})</span>
             <Price size="big" />
         </div>
         <div class="topbar-item">
-            <span class="title">Change ({{ timeframe }}h)</span>
+            <span class="title">Change ({{ selectedTimeframe }}h)</span>
             <Change size="big" />
         </div>
         <div class="topbar-item">
-            <span class="title">Volume ({{ timeframe }}h)</span>
+            <span class="title">Volume ({{ selectedTimeframe }}h)</span>
             <span class="value">$ 6.874.214</span>
         </div>
     </div>
 </template>
 
 <script>
-import store from '../store';
 import Change from './Change.vue'
 import Price from './Price.vue';
-
+import { mapGetters, mapMutations } from 'vuex'
 export default {
     components: {
         Change,
         Price
     },
     computed: {
-        currency() {
-            return store.state.currency
+        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'pairSelectorVisibility']),
+        selectedBaseCurrency: {
+            get() {
+                return this.baseCurrency
+            }
         },
-        timeframe() {
-            return store.state.timeframe.selected
+        selectedTimeframe: {
+            get() {
+                return this.timeframe
+            }
         },
-        counterpart(){
-            return store.state.counterpart
+        pairCounterpart: {
+            get() {
+                return this.counterpart
+            }
         },
-        asset(){
-            return store.state.asset
+        pairAsset: {
+            get() {
+                return this.asset
+            }
+        },
+        pairSelector: {
+            get() {
+                return this.pairSelectorVisbility
+            },
+            set(newValue) {
+                this.updatePairSelectorVisibility(newValue)
+            }
+        }
+    },
+    methods: {
+        ...mapMutations(['updatePairSelectorVisibility']),
+        showPairSelector() {
+            
         }
     }
 }

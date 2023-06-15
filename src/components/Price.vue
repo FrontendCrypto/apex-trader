@@ -4,31 +4,39 @@
 <script>
 
 import store from '../store'
+import { mapGetters } from 'vuex'
 export default {
     props: {
         size: String
     },
     computed: {
-        value() {
-            return store.state.price.value
+        ...mapGetters(['price', 'change', 'baseCurrency']),
+        currentValue: {
+            get() {
+                return store.state.price.value
+            }
         },
-        change(){
-            return store.state.change
+        currentChange: {
+            get() {
+                return store.state.change
+            }
         },
-        currency() {
-            return store.state.currency
+        selectedBaseCurrency: {
+            get() {
+                return store.state.baseCurrency
+            }
         },
         formattedPrice() {
             const usd = new Intl.NumberFormat('en-US', {
                 style: 'currency',
-                currency: this.currency,
+                currency: this.selectedBaseCurrency,
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
             })
-            return usd.format(this.value)
+            return usd.format(this.currentValue)
         },
         valueClass() {
-            const valueClass = this.change > 0 ? 'positive' : 'negative'
+            const valueClass = this.currentChange > 0 ? 'positive' : 'negative'
             return valueClass
         }
     }
