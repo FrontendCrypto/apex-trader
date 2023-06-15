@@ -19,6 +19,7 @@
     "sass": "^1.63.4",
     "vue": "^3.3.2",
     "vue-chartjs": "^5.2.0",
+    "vue-cryptoicon": "^0.18.1",
     "vue3-apexcharts": "^1.4.1",
     "vuetify": "^3.3.3",
     "vuex": "^4.1.0",

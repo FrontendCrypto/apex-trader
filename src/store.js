@@ -2,9 +2,11 @@ import { createStore } from 'vuex'
 // import chart from './data/chart'
 import { bid, ask } from './data/orderbook'
 import { trades } from './data/trades'
+import { markets } from './data/markets'
 const store = createStore({
   state() {
     return {
+      markets: markets,
       pairSelector: {
         visible: false
       },
