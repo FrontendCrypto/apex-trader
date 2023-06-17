@@ -44,7 +44,7 @@ export default {
 </script>
 
 <styles scoped lang="scss">
-@import '@/assets/variables.scss';
+@import '@/assets/variables';
 
 span {
     font-size: 14px;

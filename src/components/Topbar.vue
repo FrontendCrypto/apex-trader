@@ -4,7 +4,10 @@
             <small>ApexTrader</small>
         </div>
         <div class="topbar-item">
-            <button @click="this.pairSelector = true;">{{ pairAsset }}-{{ pairCounterpart }}</button>
+            <button class="button" @click="this.pairSelector = true;">
+                <span>{{ pairAsset }}-{{ pairCounterpart }}</span>
+                <ChevronRightIcon class="icon"/>
+            </button>
         </div>
         <div class="topbar-item">
             <span class="title">Price ({{ selectedBaseCurrency }})</span>
@@ -25,10 +28,13 @@
 import Change from './Change.vue'
 import Price from './Price.vue';
 import { mapGetters, mapMutations } from 'vuex'
+import { ChevronRightIcon } from '@heroicons/vue/24/solid'
+
 export default {
     components: {
         Change,
-        Price
+        Price,
+        ChevronRightIcon
     },
     computed: {
         ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'pairSelectorVisibility']),
@@ -71,7 +77,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/variables.scss';
+@import '@/assets/variables';
 
 .topbar {
     display: flex;

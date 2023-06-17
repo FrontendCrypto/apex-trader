@@ -1,9 +1,13 @@
 $background: #262d38;
 $surface: #131722;
-$surfaceHight: #0b0e14;
+$surfaceHigh: darken($surface, 1);
+// $surfaceHight: #0b0e14;
 $surfaceContent: rgb(204, 208, 220);
 $surfaceContentLow: rgb(117, 134, 150);
 $surfaceContentHight: rgb(173, 155, 227);
 $negative: red;
 $positive: green;
+$border: $background;
 
+$button: rgba(255, 255, 255, 0.05);
+$buttonHover: rgba(255, 255, 255, 0.1);

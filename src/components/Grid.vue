@@ -75,7 +75,7 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/variables.scss';
+@import '@/assets/variables';
 
 .order-type {
     display: flex;
@@ -148,7 +148,7 @@ export default {
     // gap: 4px;
 
     // >div {
-    //     background-color: $surfaceHight;
+    //     background-color: $surfaceHigh;
     // }
 }
 
