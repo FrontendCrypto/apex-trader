@@ -55,12 +55,16 @@ export default {
             <Orderbook />
         </div>
         <!-- <div class="trades">
-                                                                                                                <p>Trades</p>
-                                                                                                            </div> -->
+                                                                                                                    <p>Trades</p>
+                                                                                                                </div> -->
 
         <div class="grid-item chart">
-            <p>Chart</p>
-            <!-- <VueApexCharts ref="chart" :options="options" :series="options.series" class="chart" /> -->
+            <div class="chart-price">Price</div>
+            <div class="chart-depth">
+                <div class="content">
+                    Depth
+                </div>
+            </div>
         </div>
         <div class="grid-item tabs-section">
             <Tabs :expanded="false"
@@ -161,7 +165,19 @@ export default {
 .chart {
     grid-column: 3;
     grid-row: 2;
-    background-color: $surface;
+    display: grid;
+    gap: 4px;
+    grid-template-columns: 1fr 100px;
+
+    .chart-price {
+        background-color: $positive;
+        background-color: $surface;
+    }
+
+    .chart-depth {
+        background-color: $negative;
+        background-color: $surface;
+    }
 }
 
 .tabs-section {

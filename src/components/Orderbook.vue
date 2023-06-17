@@ -4,11 +4,11 @@
             <canvas ref="chart"></canvas>
         </div> -->
         <div class="side bid">
-            <div v-for="item in bid" class="row" :key="item.price">
-                <span class="price">{{ item.price }}</span>
+            <div v-for="(bid, index) in bids" class="row" :key="bid.price">
                 <span class="indicator"></span>
-                <span class="size">{{ item.size }}</span>
-                <span class="amount">{{ item.amount }}</span>
+                <span class="sum">{{ calculateBidSum(index) }}</span>
+                <span class="amount">{{ bid.amount }}</span>
+                <span class="price">{{ bid.price }}</span>
             </div>
         </div>
         <div class="current">
@@ -16,11 +16,11 @@
             <Change size="medium" />
         </div>
         <div class="side ask">
-            <div v-for="item in ask" class="row" :key="item.price">
-                <span class="price">{{ item.price }}</span>
+            <div v-for="(ask, index) in asks" class="row" :key="ask.price">
                 <span class="indicator"></span>
-                <span class="size">{{ item.size }}</span>
-                <span class="amount">{{ item.amount }}</span>
+                <span class="sum">{{ calculateAskSum(index) }}</span>
+                <span class="amount">{{ ask.amount }}</span>
+                <span class="price">{{ ask.price }}</span>
             </div>
         </div>
     </div>
@@ -40,15 +40,14 @@ export default {
         Price,
     },
     mounted() {
-        console.log('dentro')
         // this.createDepthChart();
     },
     computed: {
-        bid() {
-            return store.state.orderbook.bid
+        bids() {
+            return store.state.orderbook.bids
         },
-        ask() {
-            return store.state.orderbook.ask
+        asks() {
+            return store.state.orderbook.asks
         },
         bidPrices() {
             return store.state.orderbook.bid.map(item => item.price);
@@ -64,6 +63,20 @@ export default {
         },
     },
     methods: {
+        calculateBidSum(index) {
+            let sum = 0;
+            for (let i = this.bids.length - 1; i >= index; i--) {
+                sum += this.bids[i].amount;
+            }
+            return sum;
+        },
+        calculateAskSum(index) {
+            let sum = 0;
+            for (let i = 0; i <= index; i++) {
+                sum += this.asks[i].amount;
+            }
+            return sum;
+        },
         // createDepthChart() {
         //     console.log('dentro')
         //     const bidPrices = this.bidPrices;
@@ -154,7 +167,7 @@ export default {
 
 .row {
     display: grid;
-    grid-template-columns: 72px 24px 1fr 72px;
+    grid-template-columns: 24px 72px 1fr 72px;
     grid-template-rows: 24px;
     gap: 12px;
     padding: 0 12px;

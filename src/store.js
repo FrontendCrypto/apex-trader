@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 // import chart from './data/chart'
-import { bid, ask } from './data/orderbook'
+import { orderbook } from './data/orderbook'
 import { trades } from './data/trades'
 import { markets } from './data/markets'
 const store = createStore({
@@ -13,11 +13,8 @@ const store = createStore({
       baseCurrency: 'USD',
       asset: 'BTC',
       counterpart: 'USD',
-      orderbook: {
-        bid: bid,
-        ask: ask,
-      },
-      trades: trades,
+      orderbook,
+      trades,
       timeframe: {
         selected: 24,
         values: [1, 4, 12, 24]
