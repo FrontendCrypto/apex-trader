@@ -9,6 +9,7 @@
                 <span class="sum">{{ calculateBidSum(index) }}</span>
                 <span class="amount">{{ bid.amount }}</span>
                 <span class="price">{{ this.getFormattedCurrency(bid.price) }}</span>
+                <div class="row-bar" :style="{ width: getAskBarWidth(index) }"></div>
             </div>
         </div>
         <div class="current">
@@ -21,6 +22,7 @@
                 <span class="sum">{{ calculateAskSum(index) }}</span>
                 <span class="amount">{{ ask.amount }}</span>
                 <span class="price">{{ this.getFormattedCurrency(ask.price) }}</span>
+                <div class="row-bar" :style="{ width: getAskBarWidth(index) }"></div>
             </div>
         </div>
     </div>
@@ -41,8 +43,15 @@ export default {
         Change,
         Price,
     },
+    data() {
+        return {
+            totalAmount: 0,
+        };
+    },
     mounted() {
-        // this.createDepthChart();
+        const totalBids = this.bids.reduce((sum, bid) => sum + bid.amount, 0);
+        const totalAsks = this.asks.reduce((sum, ask) => sum + ask.amount, 0);
+        this.totalAmount = Math.max(totalBids, totalAsks);
     },
     computed: {
         ...mapGetters(['bids', 'asks', 'baseCurrency']),
@@ -81,6 +90,18 @@ export default {
             }
             return sum.toFixed(1);
         },
+        getBidBarWidth(index) {
+            const sum = this.calculateBidSum(index);
+            const totalAmount = this.calculateBidSum(this.bids.length - 1);
+            const percentage = (sum / totalAmount) * 100;
+            return `${percentage}%`;
+        },
+        getAskBarWidth(index) {
+            const sum = this.calculateAskSum(index);
+            const totalAmount = this.calculateAskSum(this.asks.length - 1);
+            const percentage = (sum / totalAmount) * 100;
+            return `${percentage}%`;
+        },
     }
 }
 </script>
@@ -114,13 +135,13 @@ export default {
     position: relative;
 
     .indicator {
-        background-color: #76D1AA;
+        background-color: rgba(118, 209, 170, 1);
     }
 }
 
 .ask {
     .indicator {
-        background-color: #CC25CF;
+        background-color: rgba(173, 155, 227, 1);
     }
 }
 
@@ -129,10 +150,23 @@ export default {
     grid-template-columns: 24px 72px 1fr 72px;
     grid-template-rows: 24px;
     gap: 12px;
-    padding: 0 12px;
+    // padding: 0 12px;
+    position: relative;
+
+    .row-bar {
+        position: absolute;
+        background-color: #CC25CF;
+        opacity: 0.1;
+        content: '';
+        height: 100%;
+        left: 0;
+        z-index: 0;
+        width: calc((var(--amount) / var(--total-amount)) * 100%);
+    }
 
     span {
         font-size: 13px;
+        z-index: 1;
     }
 
 
