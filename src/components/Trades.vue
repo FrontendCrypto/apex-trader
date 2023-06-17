@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <table>
+        <table class="table">
             <thead>
                 <th class="fixed-header">Time</th>
                 <th class="fixed-header">Amount</th>
