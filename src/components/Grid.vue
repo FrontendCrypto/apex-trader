@@ -5,13 +5,13 @@ import Tabs from './Tabs.vue'
 import Trades from './Trades.vue'
 import Operative from './Operative.vue'
 import Orderbook from './Orderbook.vue'
+import DepthChart from './DepthChart.vue'
 import PairSelector from './PairSelector.vue'
-import VueApexCharts from 'vue3-apexcharts'
 
 export default {
     components: {
-        VueApexCharts,
         Orderbook,
+        DepthChart,
         Topbar,
         Tabs,
         Operative,
@@ -55,14 +55,14 @@ export default {
             <Orderbook />
         </div>
         <!-- <div class="trades">
-                                                                                                                    <p>Trades</p>
-                                                                                                                </div> -->
+                                                                                                                                        <p>Trades</p>
+                                                                                                                                    </div> -->
 
         <div class="grid-item chart">
-            <div class="chart-price">Price</div>
-            <div class="chart-depth">
-                <div class="content">
-                    Depth
+            <div class="price-chart">Price</div>
+            <div class="depth-chart">
+                <div class="depth-chart-content">
+                    <DepthChart />
                 </div>
             </div>
         </div>
@@ -169,14 +169,22 @@ export default {
     gap: 4px;
     grid-template-columns: 1fr 100px;
 
-    .chart-price {
+    .price-chart {
         background-color: $positive;
         background-color: $surface;
     }
 
-    .chart-depth {
+    .depth-chart {
         background-color: $negative;
         background-color: $surface;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .depth-chart-content {
+            flex: 1;
+            overflow: auto;
+        }
     }
 }
 

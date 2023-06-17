@@ -8,7 +8,7 @@
                 <span class="indicator"></span>
                 <span class="sum">{{ calculateBidSum(index) }}</span>
                 <span class="amount">{{ bid.amount }}</span>
-                <span class="price">{{ bid.price }}</span>
+                <span class="price">{{ this.getFormattedCurrency(bid.price) }}</span>
             </div>
         </div>
         <div class="current">
@@ -20,7 +20,7 @@
                 <span class="indicator"></span>
                 <span class="sum">{{ calculateAskSum(index) }}</span>
                 <span class="amount">{{ ask.amount }}</span>
-                <span class="price">{{ ask.price }}</span>
+                <span class="price">{{ this.getFormattedCurrency(ask.price) }}</span>
             </div>
         </div>
     </div>
@@ -29,10 +29,12 @@
 <script>
 import store from '../store'
 // import Chart from 'chart.js/auto';
+import { mapGetters } from 'vuex'
 import Change from './Change.vue';
 import Price from './Price.vue';
 
 // Chart.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
+import { formatCurrency } from '../helpers/helpers'
 
 export default {
     components: {
@@ -43,85 +45,42 @@ export default {
         // this.createDepthChart();
     },
     computed: {
-        bids() {
-            return store.state.orderbook.bids
+        ...mapGetters(['bids', 'asks', 'baseCurrency']),
+        bids: {
+            get() {
+                return store.state.orderbook.bids
+            }
         },
-        asks() {
-            return store.state.orderbook.asks
+        asks: {
+            get() {
+                return store.state.orderbook.asks
+            }
         },
-        bidPrices() {
-            return store.state.orderbook.bid.map(item => item.price);
-        },
-        bidSizes() {
-            return store.state.orderbook.bid.map(item => item.size);
-        },
-        askPrices() {
-            return store.state.orderbook.ask.map(item => item.price);
-        },
-        askSizes() {
-            return store.state.orderbook.ask.map(item => item.size);
-        },
+        baseCurrency: {
+            get() {
+                return store.state.baseCurrency
+            }
+        }
     },
     methods: {
+        getFormattedCurrency(value) {
+            const formattedCurrency = formatCurrency(this.baseCurrency, value, 1)
+            return formattedCurrency
+        },
         calculateBidSum(index) {
             let sum = 0;
             for (let i = this.bids.length - 1; i >= index; i--) {
                 sum += this.bids[i].amount;
             }
-            return sum;
+            return sum.toFixed(1);
         },
         calculateAskSum(index) {
             let sum = 0;
             for (let i = 0; i <= index; i++) {
                 sum += this.asks[i].amount;
             }
-            return sum;
+            return sum.toFixed(1);
         },
-        // createDepthChart() {
-        //     console.log('dentro')
-        //     const bidPrices = this.bidPrices;
-        //     const bidSizes = this.bidSizes;
-        //     const askPrices = this.askPrices;
-        //     const askSizes = this.askSizes;
-
-        //     const ctx = this.$refs.chart.getContext('2d');
-
-        //     // Crear el gráfico
-        //     const depthChart = new Chart(ctx, {
-        //         type: 'line',
-        //         data: {
-        //             labels: bidPrices.concat(askPrices.reverse()),
-        //             datasets: [
-        //                 {
-        //                     label: 'Bid',
-        //                     data: bidSizes.concat(new Array(askSizes.length).fill(0)),
-        //                     backgroundColor: '#76D1AA',
-        //                     borderColor: '#76D1AA',
-        //                     fill: 'start',
-        //                 },
-        //                 {
-        //                     label: 'Ask',
-        //                     data: new Array(bidSizes.length).fill(0).concat(askSizes),
-        //                     backgroundColor: '#CC25CF',
-        //                     borderColor: '#CC25CF',
-        //                     fill: 'start',
-        //                 },
-        //             ],
-        //         },
-        //         options: {
-        //             responsive: true,
-        //             maintainAspectRatio: false,
-        //             scales: {
-        //                 x: {
-        //                     display: true,
-        //                 },
-        //                 y: {
-        //                     display: true,
-        //                 },
-        //             },
-        //         },
-        //     });
-        // },
     }
 }
 </script>
