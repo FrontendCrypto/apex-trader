@@ -1,8 +1,8 @@
 <template>
     <div class="orderbook">
-        <div class="chart">
+        <!-- <div class="chart">
             <canvas ref="chart"></canvas>
-        </div>
+        </div> -->
         <div class="side bid">
             <div v-for="item in bid" class="row" :key="item.price">
                 <span class="price">{{ item.price }}</span>

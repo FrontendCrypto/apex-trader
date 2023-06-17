@@ -1,13 +1,14 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
-import anime from 'animejs'
-import { StarIcon as StarIconOutlined } from '@heroicons/vue/24/outline'
-import { StarIcon as StarIconSolid } from '@heroicons/vue/24/solid'
-import store from '../store'
+import anime from 'animejs';
+import Favorite from './Favorite.vue';
+import store from '../store';
+import { XMarkIcon } from '@heroicons/vue/24/solid'
+
 export default {
     components: {
-        starIconOutlined: StarIconOutlined,
-        starIconSolid: StarIconSolid,
+        Favorite,
+        XMarkIcon
     },
     computed: {
         ...mapGetters(['pairSelectorVisibility']),
@@ -32,6 +33,10 @@ export default {
     },
     methods: {
         ...mapMutations(['updatePairSelectorVisibility']),
+        toggleFavorite(pair) {
+            pair.favorite = !pair.favorite
+            // @todo store / save preferences
+        },
         show() {
             anime({
                 targets: '.pair-selector',
@@ -54,9 +59,13 @@ export default {
 
 <template>
     <div class="pair-selector">
-        <button @click="isVisible = false">Cerrar</button>
+        <div class="header">
+            <button class="button" @click="isVisible = false">
+                <XMarkIcon class="icon" />
+            </button>
+        </div>
         <div class="markets">
-            <div class="row header">
+            <div class="row markets-header">
                 <div>
                     <span>Pair</span>
                 </div>
@@ -85,10 +94,7 @@ export default {
                     <span>{{ pair.price.change }}</span>
                 </div>
                 <div>
-                    <button>
-                        <star-icon-solid v-if="pair.favorite" class="icon favorite" />
-                        <star-icon-outlined v-else class="icon" />
-                    </button>
+                    <Favorite :ticker="pair.ticker" :size="24" :favorite="pair.favorite" @toggleFavorite="toggleFavorite(pair)" />
                 </div>
             </div>
         </div>
@@ -96,12 +102,17 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
+@import '../assets/variables';
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+}
 
 .pair-selector {
     position: absolute;
     height: 100vh;
-    background-color: $surfaceHight;
+    background-color: $surfaceHigh;
     width: 500px;
     left: -500px;
     padding: 16px;
@@ -116,14 +127,7 @@ export default {
     margin-top: 16px;
 }
 
-.icon {
-    color: $surfaceContent;
-    width: 24px;
 
-    &.favorite {
-        color: $surfaceContentHight;
-    }
-}
 
 .row {
     flex: 1;
@@ -142,7 +146,7 @@ export default {
         font-size: 14px;
     }
 
-    &.header {
+    &.markets-header {
         padding-bottom: 8px;
 
         span {

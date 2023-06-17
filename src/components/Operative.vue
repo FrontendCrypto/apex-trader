@@ -1,3 +1,39 @@
+<script>
+import store from '../store';
+import { ChevronRightIcon } from '@heroicons/vue/24/solid'
+
+export default {
+    data() {
+        return {
+            orderType: 'limit',
+            orderTypes: [
+                { value: 'limit', label: 'Limit' },
+                { value: 'market', label: 'Market' },
+                { value: 'stopLimit', label: 'Stop Limit' },
+                { value: 'oco', label: 'OCO' }
+            ]
+        }
+    },
+    components: {
+        ChevronRightIcon
+    },
+    computed: {
+        currency() {
+            return store.state.currency
+        },
+        asset() {
+            return store.state.asset
+        },
+        counterpart() {
+            return store.state.counterpart
+        }
+    },
+    methods: {
+
+    }
+}
+</script>
+
 <template>
     <div class="operative-tabs">
         <div class="operative-tabs-bar">
@@ -9,41 +45,87 @@
             </button>
         </div>
         <div class="content">
-            <form>
-                <div class="order-type">
-                    <div>
-                        <input type="radio" name="orderType" id="limit" value="limit" checked>
-                        <label for="limit"><span>Limit</span></label>
+            <form class="order-form">
+                <div>
+                    <div class="order-type form-element">
+                        <label for="orderType">Order type</label>
+                        <select id="orderType" name="orderType" v-model="orderType">
+                            <option v-for="type in orderTypes" :key="type.value" :value="type.value">{{ type.label }}
+                            </option>
+                        </select>
                     </div>
-                    <div>
-                        <input type="radio" name="orderType" id="market" value="market">
-                        <label for="market"><span>Market</span></label>
+                    <div v-if="orderType === 'limit'">
+                        <div class="form-element">
+                            <label for="quantity">Quantity ({{ asset }})</label>
+                            <input type="number" name="" id="quantity" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="price">Price ({{ counterpart }})</label>
+                            <input type="number" name="" id="price" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="total">Total (incl. fee) ({{ counterpart }})</label>
+                            <input type="number" name="" id="total" value="">
+                        </div>
                     </div>
-                    <div>
-                        <input type="radio" name="orderType" id="stopLimit" value="stopLimit">
-                        <label for="stopLimit"><span>Stop Limit</span></label>
+
+                    <div v-if="orderType === 'stopLimit'">
+                        <div class="form-element">
+                            <label for="triggerPrice">Trigger Price {{ counterpart }}</label>
+                            <input type="number" name="triggerPrice" id="triggerPrice" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="quantity">Quantity {{ asset }}</label>
+                            <input type="number" name="quantity" id="quantity" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="price">Price {{ counterpart }}</label>
+                            <input type="number" name="price" id="price" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="total">Total (incl. fee) ({{ counterpart }})</label>
+                            <input type="number" name="" id="total" value="">
+                        </div>
                     </div>
-                    <div>
-                        <input type="radio" name="orderType" id="oco" value="stopLimit">
-                        <label for="oco"><span>OCO</span></label>
+
+                    <div v-if="orderType === 'market'">
+                        <div class="form-element">
+                            <label for="quantity">Quantity aprox. {{ asset }}</label>
+                            <input type="number" name="" id="quantity" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="totalPrice">Total Price {{ counterpart }}</label>
+                            <input type="number" name="" id="totalPrice" value="">
+                        </div>
                     </div>
+
+                    <div v-if="orderType === 'oco'">
+                        <div class="form-element">
+                            <label for="price">Price {{ counterpart }}</label>
+                            <input type="number" name="" id="price" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="stop">Stop {{ counterpart }}</label>
+                            <input type="number" name="" id="stop" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="limit">Limit {{ counterpart }}</label>
+                            <input type="number" name="" id="limit" value="">
+                        </div>
+                        <div class="form-element">
+                            <label for="quantity">Quantity {{ asset }}</label>
+                            <input type="number" name="" id="quantity" value="">
+                        </div>
+                    </div>
+                    <button class="button w-100">
+                        <span>Buy</span>
+                    </button>
                 </div>
-                <div class="order-form">
-                    <div>
-                        <label for="quantity">Quantity ({{ asset }})</label>
-                        <input type="number" name="" id="quantity" value="">
-                    </div>
-                    <div>
-                        <label for="price">Price ({{ counterpart }})</label>
-                        <input type="number" name="" id="price" value="">
-                    </div>
-                    <div>
-                        <label for="total">Total ({{ counterpart }})</label>
-                        <input type="number" name="" id="total" value="">
-                    </div>
-                </div>
+
+
                 <div class="advanced">
-                    <div>
+                    <span class="section-title">Advanced options</span>
+                    <div class="form-element">
                         <label for="timeInForce">Time in force</label>
                         <select name="" id="timeInForce">
                             <option selected>Good Til Cancelled</option>
@@ -51,7 +133,7 @@
                             <option>Fill or Kill</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="form-element">
                         <label for="postOnly">Post Only?</label>
                         <input type="checkbox" id="postOnly">
                     </div>
@@ -61,32 +143,14 @@
         </div>
     </div>
 </template>
-<script>
-import store from '../store';
 
-export default {
-    components: {
-
-    },
-    computed:{
-        currency(){
-            return store.state.currency
-        },
-        asset(){
-            return store.state.asset
-        },
-        counterpart(){
-            return store.state.counterpart
-        }
-    },
-    methods: {
-
-    }
-}
-</script>
 
 <styles scoped lang="scss">
 @import '@/assets/variables.scss';
+
+.section-title {
+    font-size: 18px;
+}
 
 .operative-tabs {
     display: grid;
@@ -138,7 +202,11 @@ export default {
 
 .content {
     padding: 12px;
+}
+
+.order-form {
     display: flex;
+    gap: 24px;
     flex-direction: column;
 }
 </styles>
