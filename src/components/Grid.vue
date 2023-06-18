@@ -55,8 +55,8 @@ export default {
             <Orderbook />
         </div>
         <!-- <div class="trades">
-                                                                                                                                        <p>Trades</p>
-                                                                                                                                    </div> -->
+                                                                                                                                                    <p>Trades</p>
+                                                                                                                                                </div> -->
 
         <div class="grid-item chart">
             <div class="price-chart">Price</div>
@@ -74,6 +74,11 @@ export default {
 
         <div class="grid-item trades">
             <Trades />
+        </div>
+
+        <div class="footer">
+            <span class="footer-author"><a target="_blank"
+                    href="https://github.com/FrontendCrypto/apex-trader">ApexTrader</a> by Pablo Carballeda</span>
         </div>
     </div>
 </template>
@@ -122,16 +127,12 @@ export default {
 .grid {
     display: grid;
     grid-template-columns: 300px 300px 1fr 300px;
-    grid-template-rows: 72px 1fr 300px;
+    grid-template-rows: 72px 1fr 300px 64px;
     width: 100vw;
     height: 100vh;
     gap: 4px;
 
     .grid-item {
-        // padding: 8px;
-        // display: flex;
-        // align-items: center;
-        // justify-content: center;
         color: $surfaceContent
     }
 }
@@ -143,24 +144,10 @@ export default {
 }
 
 .orderbook {
-    grid-row: 2/5;
+    grid-row: 2/4;
     grid-column: 2;
     background-color: $surface;
-    // display: grid;
-    // grid-template-rows: 1fr 1fr;
-    // grid-template-columns: 1fr;
-    // gap: 4px;
-
-    // >div {
-    //     background-color: $surfaceHigh;
-    // }
 }
-
-// .trades {
-//     grid-row: 1;
-//     grid-column: 3;
-//     background-color: $surface;
-// }
 
 .chart {
     grid-column: 3;
@@ -189,7 +176,7 @@ export default {
 }
 
 .tabs-section {
-    grid-row: 3;
+    grid-row: 3/4;
     grid-column: 3/4;
     background-color: $surface;
 }
@@ -205,5 +192,24 @@ export default {
     grid-column: 4;
     background-color: $surface;
     overflow-y: scroll;
+}
+
+.footer {
+    grid-row: 4;
+    grid-column: 1/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $surface;
+}
+
+.footer-author {
+    font-size: 14px;
+    color: $surfaceContent;
+
+    a {
+        font-weight: bolder;
+        color: inherit;
+    }
 }
 </style>

@@ -1,14 +1,17 @@
-import { fileURLToPath, URL } from 'node:url'
+// Import necessary modules and plugins
+import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-
-// https://vitejs.dev/config/
+// Configuration for Vite
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    // Use the Vue plugin
+    vue(),
+  ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
-})
+      '@': fileURLToPath(new URL('./src', import.meta.url)), // Set the alias for the source directory
+    },
+  },
+});

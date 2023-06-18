@@ -139,7 +139,6 @@ export default {
                     </div>
                 </div>
             </form>
-            <span style="margin-top: auto;">ApexTrader by Pablo Carballeda</span>
         </div>
     </div>
 </template>

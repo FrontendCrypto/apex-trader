@@ -18,11 +18,11 @@ export default {
                     {
                         label: 'Bids',
                         data: bidsData,
-                        borderColor: 'red',
-                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                        borderColor: 'rgba(118, 209, 170, 1)',
+                        backgroundColor: 'rgba(118, 209, 170, 0.1)',
                         fill: true,
                         tension: 0.4,
-                        borderWidth: 2,
+                        borderWidth: 1,
                         pointRadius: 0,
                         stepped: 'before' // Stepline
                     }
@@ -69,11 +69,11 @@ export default {
                     {
                         label: 'Asks',
                         data: asksData,
-                        borderColor: 'green',
-                        backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                        borderColor: 'rgba(173, 155, 227, 1)',
+                        backgroundColor: 'rgba(173, 155, 227, 0.1)',
                         fill: true,
                         tension: 0.4,
-                        borderWidth: 2,
+                        borderWidth: 1,
                         pointRadius: 0,
                         stepped: 'before' // Stepline
                     }

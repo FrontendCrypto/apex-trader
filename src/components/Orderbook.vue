@@ -1,27 +1,44 @@
 <template>
     <div class="orderbook">
+        <!-- Orderbook chart -->
         <!-- <div class="chart">
-            <canvas ref="chart"></canvas>
-        </div> -->
+        <canvas ref="chart"></canvas>
+      </div> -->
+
+        <!-- Bids side -->
         <div class="side bid">
-            <div v-for="(bid, index) in bids" class="row" :key="bid.price">
-                <span class="indicator"></span>
+            <div v-for="(bid, index) in bids.slice().reverse()" class="row" :key="bid.price">
+                <!-- Bid indicator -->
+                <span class="indicator" :style="{ opacity: getBidBarWidth(index) }"></span>
+                <!-- Bid sum -->
                 <span class="sum">{{ calculateBidSum(index) }}</span>
+                <!-- Bid amount -->
                 <span class="amount">{{ bid.amount }}</span>
+                <!-- Bid price -->
                 <span class="price">{{ this.getFormattedCurrency(bid.price) }}</span>
-                <div class="row-bar" :style="{ width: getAskBarWidth(index) }"></div>
+                <!-- Bid row bar -->
+                <div class="row-bar" :style="{ width: getBidBarWidth(index) }"></div>
             </div>
         </div>
+
+        <!-- Current price and change -->
         <div class="current">
             <Price size="big" />
             <Change size="medium" />
         </div>
+
+        <!-- Asks side -->
         <div class="side ask">
             <div v-for="(ask, index) in asks" class="row" :key="ask.price">
-                <span class="indicator"></span>
+                <!-- Ask indicator -->
+                <span class="indicator" :style="{ opacity: getAskBarWidth(index) }"></span>
+                <!-- Ask sum -->
                 <span class="sum">{{ calculateAskSum(index) }}</span>
+                <!-- Ask amount -->
                 <span class="amount">{{ ask.amount }}</span>
+                <!-- Ask price -->
                 <span class="price">{{ this.getFormattedCurrency(ask.price) }}</span>
+                <!-- Ask row bar -->
                 <div class="row-bar" :style="{ width: getAskBarWidth(index) }"></div>
             </div>
         </div>
@@ -29,15 +46,15 @@
 </template>
   
 <script>
-import store from '../store'
-// import Chart from 'chart.js/auto';
-import { mapGetters } from 'vuex'
+import store from '../store';
+import { mapGetters } from 'vuex';
 import Change from './Change.vue';
 import Price from './Price.vue';
+import { formatCurrency } from '../helpers/helpers';
 
-// Chart.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
-import { formatCurrency } from '../helpers/helpers'
-
+/**
+ * Represents an order book component.
+ */
 export default {
     components: {
         Change,
@@ -57,25 +74,36 @@ export default {
         ...mapGetters(['bids', 'asks', 'baseCurrency']),
         bids: {
             get() {
-                return store.state.orderbook.bids
-            }
+                return store.state.orderbook.bids;
+            },
         },
         asks: {
             get() {
-                return store.state.orderbook.asks
-            }
+                return store.state.orderbook.asks;
+            },
         },
         baseCurrency: {
             get() {
-                return store.state.baseCurrency
-            }
-        }
+                return store.state.baseCurrency;
+            },
+        },
     },
     methods: {
+        /**
+         * Formats the currency value based on the base currency.
+         * @param {number} value - The currency value to format.
+         * @returns {string} The formatted currency value.
+         */
         getFormattedCurrency(value) {
-            const formattedCurrency = formatCurrency(this.baseCurrency, value, 1)
-            return formattedCurrency
+            const formattedCurrency = formatCurrency(this.baseCurrency, value, 1);
+            return formattedCurrency;
         },
+
+        /**
+         * Calculates the sum of bid amounts from the given index to the end of the bids list.
+         * @param {number} index - The starting index.
+         * @returns {number} The calculated sum.
+         */
         calculateBidSum(index) {
             let sum = 0;
             for (let i = this.bids.length - 1; i >= index; i--) {
@@ -83,29 +111,42 @@ export default {
             }
             return sum.toFixed(1);
         },
+        /**
+         * Calculates the sum of ask amounts from the beginning of the asks list to the given index.
+         * @param {number} index - The ending index.
+         * @returns {number} The calculated sum.
+         */
         calculateAskSum(index) {
-            let sum = 0;
-            for (let i = 0; i <= index; i++) {
-                sum += this.asks[i].amount;
-            }
+            const sum = this.asks.slice(0, index + 1).reduce((accumulator, ask) => accumulator + ask.amount, 0);
             return sum.toFixed(1);
         },
+
+        /**
+         * Calculates the width of the bid row bar based on the sum of bid amounts and the maximum total bid amount.
+         * @param {number} index - The index of the bid row.
+         * @returns {string} The calculated width in percentage.
+         */
         getBidBarWidth(index) {
+            const maxTotalAmount = this.calculateBidSum(0);
             const sum = this.calculateBidSum(index);
-            const totalAmount = this.calculateBidSum(this.bids.length - 1);
-            const percentage = (sum / totalAmount) * 100;
+            const percentage = (sum / maxTotalAmount) * 100;
             return `${percentage}%`;
         },
+
+        /**
+         * Calculates the width of the ask row bar based on the sum of ask amounts and the total ask amount.
+         * @param {number} index - The index of the ask row.
+         * @returns {string} The calculated width in percentage.
+         */
         getAskBarWidth(index) {
             const sum = this.calculateAskSum(index);
             const totalAmount = this.calculateAskSum(this.asks.length - 1);
             const percentage = (sum / totalAmount) * 100;
             return `${percentage}%`;
         },
-    }
-}
+    },
+};
 </script>
-
 
 <style scoped lang="scss">
 .chart,
@@ -127,22 +168,33 @@ export default {
 .side {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
-
+    overflow: hidden;
 }
 
 .bid {
-    position: relative;
+    border-left: 1px solid rgba(118, 209, 170, .75);
+    justify-content: flex-end;
 
     .indicator {
+        background-color: rgba(118, 209, 170, 1);
+    }
+
+    .row-bar {
         background-color: rgba(118, 209, 170, 1);
     }
 }
 
 .ask {
+    border-left: 1px solid rgba(173, 155, 227, .75);
+
     .indicator {
         background-color: rgba(173, 155, 227, 1);
     }
+
+    .row-bar {
+        background-color: rgba(173, 155, 227, 1);
+    }
+
 }
 
 .row {
@@ -150,12 +202,10 @@ export default {
     grid-template-columns: 24px 72px 1fr 72px;
     grid-template-rows: 24px;
     gap: 12px;
-    // padding: 0 12px;
     position: relative;
 
     .row-bar {
         position: absolute;
-        background-color: #CC25CF;
         opacity: 0.1;
         content: '';
         height: 100%;
@@ -169,11 +219,20 @@ export default {
         z-index: 1;
     }
 
-
-
     .amount {
         text-align: right;
     }
+}
+
+.current {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    gap: 16px;
+    border: 1px solid rgb(38, 43, 56);
+    border-left: 0;
+    border-right: 0;
 }
 
 .current {
@@ -190,9 +249,5 @@ export default {
         font-weight: bolder;
         font-size: 16px;
     }
-
-
 }
-
-.current {}
 </style>
