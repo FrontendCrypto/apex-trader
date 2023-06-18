@@ -1,19 +1,22 @@
 @import './variables';
 
+// @import 'normalize.css';
 body {
   background-color: $background;
+  font-family: 'Roboto Mono', sans-serif;
+}
+
+html,
+body {
   margin: 0;
+  padding: 0;
   width: 100vw;
   height: 100vh;
-  font-family: 'Roboto Mono', sans-serif;
+  overflow: hidden;
 }
 
 .w-100 {
   width: 100%;
-}
-
-.apexcharts-canvas {
-  height: 100% !important;
 }
 
 .form-element {
@@ -21,6 +24,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 16px;
+
   label {
     width: 100%;
     margin-bottom: 8px;
@@ -38,7 +42,8 @@ body {
     font-family: 'Roboto Mono', sans-serif;
     padding: 8px;
     box-sizing: border-box;
-    &:focus{
+
+    &:focus {
       background-color: rgba(255, 255, 255, 0.05);
     }
   }
@@ -61,16 +66,17 @@ body {
   height: 48px;
   cursor: pointer;
   transition: 0.1s ease-in-out;
+
   &:hover {
     background-color: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-  .icon{
+  .icon {
     width: 20px;
   }
 
-  &.transparent{
+  &.transparent {
     background-color: transparent;
     border: 0;
   }

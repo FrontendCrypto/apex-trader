@@ -5,8 +5,8 @@ $surfaceHigh: darken($surface, 1);
 $surfaceContent: rgb(204, 208, 220);
 $surfaceContentLow: rgb(117, 134, 150);
 $surfaceContentHight: rgb(173, 155, 227);
-$negative: red;
-$positive: green;
+$negative: rgba(173, 155, 227, 1);
+$positive: rgba(118, 209, 170, 1);
 $border: $background;
 
 $button: rgba(255, 255, 255, 0.05);
