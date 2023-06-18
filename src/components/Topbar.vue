@@ -37,7 +37,7 @@ export default {
         ChevronRightIcon
     },
     computed: {
-        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'pairSelectorVisibility']),
+        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'pairSelectorVisibility', 'selectedAssetPrice']),
         selectedBaseCurrency: {
             get() {
                 return this.baseCurrency
@@ -69,9 +69,6 @@ export default {
     },
     methods: {
         ...mapMutations(['updatePairSelectorVisibility']),
-        showPairSelector() {
-            
-        }
     }
 }
 </script>

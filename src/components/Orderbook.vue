@@ -23,8 +23,14 @@
 
         <!-- Current price and change -->
         <div class="current">
-            <Price size="big" />
-            <Change size="medium" />
+            <div class="spread" title="Spread">
+                <Bars2Icon class="spread-icon" />
+                <span>0.04%</span>
+            </div>
+            <div class="price">
+                <Change size="medium" />
+                <Price size="big" />
+            </div>
         </div>
 
         <!-- Asks side -->
@@ -51,6 +57,7 @@ import { mapGetters } from 'vuex';
 import Change from './Change.vue';
 import Price from './Price.vue';
 import { formatCurrency } from '../helpers/helpers';
+import { Bars2Icon } from '@heroicons/vue/24/solid'
 
 /**
  * Represents an order book component.
@@ -59,6 +66,7 @@ export default {
     components: {
         Change,
         Price,
+        Bars2Icon
     },
     data() {
         return {
@@ -149,6 +157,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/variables';
+
 .chart,
 .chart>canvas {
     position: absolute;
@@ -204,6 +214,10 @@ export default {
     gap: 12px;
     position: relative;
 
+    &:hover{
+        background-color: $buttonHover;
+        cursor: pointer;
+    }
     .row-bar {
         position: absolute;
         opacity: 0.1;
@@ -227,27 +241,32 @@ export default {
 .current {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 12px;
     gap: 16px;
     border: 1px solid rgb(38, 43, 56);
     border-left: 0;
     border-right: 0;
-}
 
-.current {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px;
-    gap: 16px;
-    border: 1px solid rgb(38, 43, 56);
-    border-left: 0;
-    border-right: 0;
+    .spread {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 4px;
+    }
+
+    .spread-icon {
+        width: 24px;
+        color: $surfaceContent;
+    }
 
     .price {
         font-weight: bolder;
         font-size: 16px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
     }
 }
 </style>

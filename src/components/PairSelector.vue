@@ -11,7 +11,7 @@ export default {
         XMarkIcon
     },
     computed: {
-        ...mapGetters(['pairSelectorVisibility']),
+        ...mapGetters(['pairSelectorVisibility', 'asset']),
         isVisible: {
             get() {
                 return this.pairSelectorVisibility;
@@ -32,7 +32,11 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['updatePairSelectorVisibility']),
+        ...mapMutations(['updatePairSelectorVisibility', 'updateAsset']),
+        selectPair(value){
+            this.updateAsset(value)
+            this.updatePairSelectorVisibility(false)
+        },
         toggleFavorite(pair) {
             pair.favorite = !pair.favorite
             // @todo store / save preferences
@@ -79,7 +83,7 @@ export default {
                     <star-icon-solid class="icon" />
                 </div>
             </div>
-            <div class="row" v-for="pair in markets" :key="pair.ticker">
+            <div class="row" v-for="pair in markets" :key="pair.ticker" @click="selectPair(pair.ticker)">
                 <div>
                     <!-- https://vue-cryptoicon.netlify.app/ -->
                     <span>{{ pair.ticker }}</span>
@@ -94,7 +98,8 @@ export default {
                     <span>{{ pair.price.change }}</span>
                 </div>
                 <div>
-                    <Favorite :ticker="pair.ticker" :size="24" :favorite="pair.favorite" @toggleFavorite="toggleFavorite(pair)" />
+                    <Favorite :ticker="pair.ticker" :size="24" :favorite="pair.favorite"
+                        @toggleFavorite="toggleFavorite(pair)" />
                 </div>
             </div>
         </div>
@@ -115,7 +120,7 @@ export default {
     background-color: $surfaceHigh;
     width: 500px;
     left: -500px;
-    padding: 16px;
+    padding: 16px 0;
     z-index: 2;
     box-sizing: border-box;
 }
@@ -123,17 +128,22 @@ export default {
 .markets {
     display: grid;
     grid-auto-flow: row;
-    gap: 12px;
+    // gap: 12px;
     margin-top: 16px;
 }
-
-
 
 .row {
     flex: 1;
     display: grid;
     width: 100%;
     grid-template-columns: 1fr 1fr 1fr auto;
+    padding: 8px 16px;
+    box-sizing: border-box;
+
+    &:hover {
+        background-color: $buttonHover;
+        cursor: pointer;
+    }
 
     >div {
         display: flex;
