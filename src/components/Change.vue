@@ -1,19 +1,18 @@
 <template>
-    <span :class="[size, changeClass]">{{ change }}%</span>
+    <span :class="[size, changeClass]">{{ this.selectedAssetChange }}%</span>
 </template>
 <script>
 
-import store from '../store'
+import { mapGetters } from 'vuex'
+
 export default {
     props:{
         size: String
     },
     computed: {
-        change() {
-            return store.state.price.change
-        },
+        ...mapGetters(['price', 'change', 'baseCurrency', 'selectedAssetChange']),
         changeClass() {
-            const changeClass = this.change > 0 ? 'positive' : 'negative'
+            const changeClass = this.selectedAssetChange > 0 ? 'positive' : 'negative'
             return changeClass
         }
     }

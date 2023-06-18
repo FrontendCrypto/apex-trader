@@ -19,10 +19,10 @@ const store = createStore({
         selected: 24,
         values: [1, 4, 12, 24]
       },
-      price: {
-        value: '27342',
-        change: '-3,67'
-      },
+      // price: {
+      //   value: '27342',
+      //   change: '-3,67'
+      // },
       operative: {
         type: 'buy'
       }
@@ -31,6 +31,14 @@ const store = createStore({
   getters: {
     pairSelectorVisibility(state) {
       return state.pairSelector.visible
+    },
+    selectedAssetPrice(state) {
+      const selectedMarket = state.markets.find(market => market.ticker === state.asset);
+      return selectedMarket ? selectedMarket.price.value : null;
+    },
+    selectedAssetChange(state) {
+      const selectedMarket = state.markets.find(market => market.ticker === state.asset);
+      return selectedMarket ? selectedMarket.price.change : null;
     },
     baseCurrency(state) {
       return state.baseCurrency
@@ -48,6 +56,9 @@ const store = createStore({
   mutations: {
     updatePairSelectorVisibility(state, value) {
       state.pairSelector.visible = value
+    },
+    updateAsset(state, value){
+      state.asset = value
     }
   }
 })

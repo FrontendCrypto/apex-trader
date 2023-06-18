@@ -1,5 +1,5 @@
 <template>
-    <span :class="[size, valueClass]">{{ getFormattedCurreny() }}</span>
+    <span :class="[size, valueClass]">{{ getFormattedCurrency() }}</span>
 </template>
 <script>
 
@@ -12,7 +12,7 @@ export default {
         size: String
     },
     computed: {
-        ...mapGetters(['price', 'change', 'baseCurrency']),
+        ...mapGetters(['price', 'change', 'baseCurrency', 'selectedAssetPrice']),
         price: {
             get() {
                 return store.state.price.value
@@ -34,8 +34,8 @@ export default {
         }
     },
     methods: {
-        getFormattedCurreny() {
-            const formattedCurrency = formatCurrency(this.baseCurrency, this.price)
+        getFormattedCurrency() {
+            const formattedCurrency = formatCurrency(this.baseCurrency, this.selectedAssetPrice )
             return formattedCurrency
         }
     }
