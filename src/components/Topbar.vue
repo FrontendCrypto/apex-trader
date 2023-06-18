@@ -69,9 +69,6 @@ export default {
     },
     methods: {
         ...mapMutations(['updatePairSelectorVisibility']),
-        showPairSelector() {
-            
-        }
     }
 }
 </script>

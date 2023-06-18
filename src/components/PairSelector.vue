@@ -35,6 +35,7 @@ export default {
         ...mapMutations(['updatePairSelectorVisibility', 'updateAsset']),
         selectPair(value){
             this.updateAsset(value)
+            this.updatePairSelectorVisibility(false)
         },
         toggleFavorite(pair) {
             pair.favorite = !pair.favorite
