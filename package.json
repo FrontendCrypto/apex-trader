@@ -1,5 +1,6 @@
 {
   "name": "apextrader",
+  "description": "Blazing fast professional trading interface",
   "version": "0.0.0",
   "private": true,
   "docs": "vitepress",
@@ -16,14 +17,11 @@
   "dependencies": {
     "@heroicons/vue": "^2.0.18",
     "animejs": "^3.2.1",
-    "apexcharts": "^3.41.0",
     "chart.js": "^4.3.0",
     "normalize.css": "^8.0.1",
     "pinia": "^2.1.4",
     "sass": "^1.63.4",
     "vue-chartjs": "^5.2.0",
-    "vue-cryptoicon": "^0.18.1",
-    "vue3-apexcharts": "^1.4.1",
     "vuetify": "^3.3.3",
     "vuex": "^4.1.0",
     "webfontloader": "^1.6.28"

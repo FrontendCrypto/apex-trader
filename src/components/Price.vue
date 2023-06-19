@@ -3,7 +3,6 @@
 </template>
 <script>
 
-import store from '../store'
 import { mapGetters } from 'vuex'
 import { formatCurrency } from '../helpers/helpers'
 
@@ -12,24 +11,9 @@ export default {
         size: String
     },
     computed: {
-        ...mapGetters(['price', 'change', 'baseCurrency', 'selectedAssetPrice']),
-        price: {
-            get() {
-                return store.state.price.value
-            }
-        },
-        change: {
-            get() {
-                return store.state.change
-            }
-        },
-        baseCurrency: {
-            get() {
-                return store.state.baseCurrency
-            }
-        },
+        ...mapGetters(['price', 'change', 'baseCurrency', 'selectedAssetPrice', 'selectedAssetPrice']),
         valueClass() {
-            const valueClass = this.change > 0 ? 'positive' : 'negative'
+            const valueClass = this.selectedAssetPrice > 0 ? 'positive' : 'negative'
             return valueClass
         }
     },

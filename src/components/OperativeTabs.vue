@@ -1,7 +1,8 @@
 <template>
     <div :class="['tabs', expanded ? 'expand' : '']">
         <div class="tabbar">
-            <button :class="['tabbar-item', tab.active ? 'active' : '']" v-for="tab in tabs" :key="tab">
+            <button :class="['tabbar-item', tab.selected ? 'active' : '', tab.slug]" v-for="tab in operative"
+                :key="tab.slug" @click="updateOperativeSelectedTab(tab.slug)">
                 <span>{{ tab.name }}</span>
             </button>
         </div>
@@ -11,16 +12,20 @@
     </div>
 </template>
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
     props: {
         expanded: Boolean,
-        tabs: Array
     },
     components: {
 
     },
+    computed: {
+        ...mapGetters(['operative']),
+    },
     methods: {
-
+        ...mapMutations(['updateOperativeSelectedTab']),
     }
 }
 </script>
@@ -74,7 +79,14 @@ export default {
 
     &.active {
         background-color: rgba(255, 255, 255, 0.05);
-        border-color: rgb(55, 43, 100);
+
+        &.buy {
+            border-color: rgba(118, 209, 170, 1);
+        }
+
+        &.sell {
+            border-color: rgba(173, 155, 227, 1);
+        }
     }
 }
 

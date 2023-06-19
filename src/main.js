@@ -7,6 +7,7 @@ import App from './App.vue'
 import store from './store'
 import './assets/base.scss'
 
+
 const vuetify = createVuetify({
     components,
     directives

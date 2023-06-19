@@ -1,7 +1,7 @@
 <script>
-import store from '../store';
 import { ChevronRightIcon } from '@heroicons/vue/24/solid'
-
+import { mapGetters } from 'vuex';
+import OperativeTabs from './OperativeTabs.vue'
 export default {
     data() {
         return {
@@ -15,34 +15,26 @@ export default {
         }
     },
     components: {
-        ChevronRightIcon
+        ChevronRightIcon,
+        OperativeTabs
     },
     computed: {
-        currency() {
-            return store.state.currency
-        },
-        asset() {
-            return store.state.asset
-        },
-        counterpart() {
-            return store.state.counterpart
-        }
+        ...mapGetters(['asset', 'counterpart', 'operative'])
     },
-    methods: {
-
-    }
 }
 </script>
 
 <template>
     <div class="operative-tabs">
         <div class="operative-tabs-bar">
-            <button class="operative-tabs-item active">
+            <OperativeTabs :expanded="true">
+            </OperativeTabs>
+            <!-- <button class="operative-tabs-item active">
                 <span>Buy</span>
             </button>
             <button class="operative-tabs-item">
                 <span>Sell</span>
-            </button>
+            </button> -->
         </div>
         <div class="content">
             <form class="order-form">
