@@ -1,7 +1,8 @@
 <template>
     <div :class="['tabs', expanded ? 'expand' : '']">
         <div class="tabbar">
-            <button :class="['tabbar-item', tab.active ? 'active' : '']" v-for="tab in tabs" :key="tab">
+            <button :class="['tabbar-item', tab.selected ? 'active' : '', tab.slug]" v-for="tab in this.operative" :key="tab.slug"
+                @click="this.selectTab">
                 <span>{{ tab.name }}</span>
             </button>
         </div>
@@ -11,16 +12,22 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     props: {
         expanded: Boolean,
-        tabs: Array
     },
     components: {
 
     },
+    computed: {
+        ...mapGetters(['operative']),
+    },
     methods: {
+        selectTab() {
 
+        }
     }
 }
 </script>

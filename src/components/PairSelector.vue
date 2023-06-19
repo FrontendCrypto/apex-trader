@@ -11,10 +11,10 @@ export default {
         XMarkIcon
     },
     computed: {
-        ...mapGetters(['pairSelectorVisibility', 'asset']),
+        ...mapGetters(['isPairSelectorVisible', 'asset']),
         isVisible: {
             get() {
-                return this.pairSelectorVisibility;
+                return this.isPairSelectorVisible;
             },
             set(newValue) {
                 this.updatePairSelectorVisibility(newValue);

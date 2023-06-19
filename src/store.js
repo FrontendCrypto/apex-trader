@@ -6,7 +6,7 @@ import { markets } from './data/markets'
 const store = createStore({
   state() {
     return {
-      markets: markets,
+      markets,
       pairSelector: {
         visible: false
       },
@@ -19,17 +19,22 @@ const store = createStore({
         selected: 24,
         values: [1, 4, 12, 24]
       },
-      // price: {
-      //   value: '27342',
-      //   change: '-3,67'
-      // },
-      operative: {
-        type: 'buy'
-      }
+      operative: [
+        {
+          name: 'Buy',
+          slug: 'buy',
+          selected: true
+        },
+        {
+          name: 'Sell',
+          slug: 'sell',
+          selected: false
+        },
+      ],
     }
   },
   getters: {
-    pairSelectorVisibility(state) {
+    isPairSelectorVisible(state) {
       return state.pairSelector.visible
     },
     selectedAssetPrice(state) {
@@ -51,13 +56,22 @@ const store = createStore({
     },
     asset(state) {
       return state.asset
+    },
+    bids(state) {
+      return state.orderbook.bids
+    },
+    asks(state) {
+      return state.orderbook.asks
+    },
+    operative(state) {
+      return state.operative
     }
   },
   mutations: {
     updatePairSelectorVisibility(state, value) {
       state.pairSelector.visible = value
     },
-    updateAsset(state, value){
+    updateAsset(state, value) {
       state.asset = value
     }
   }

@@ -115,16 +115,6 @@ export default {
     },
     computed: {
         ...mapGetters(['bids', 'asks']),
-        bids: {
-            get() {
-                return store.state.orderbook.bids;
-            }
-        },
-        asks: {
-            get() {
-                return store.state.orderbook.asks;
-            }
-        }
     },
     methods: {
         calculateCumulativeData(data) {

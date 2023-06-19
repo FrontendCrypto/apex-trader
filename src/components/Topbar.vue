@@ -4,21 +4,21 @@
             <small>ApexTrader</small>
         </div>
         <div class="topbar-item">
-            <button class="button" @click="this.pairSelector = true;">
-                <span>{{ pairAsset }}-{{ pairCounterpart }}</span>
-                <ChevronRightIcon class="icon"/>
+            <button class="button" @click="this.updatePairSelectorVisibility(true);">
+                <span>{{ asset }}-{{ counterpart }}</span>
+                <ChevronRightIcon class="icon" />
             </button>
         </div>
         <div class="topbar-item">
-            <span class="title">Price ({{ selectedBaseCurrency }})</span>
+            <span class="title">Price ({{ baseCurrency }})</span>
             <Price size="big" />
         </div>
         <div class="topbar-item">
-            <span class="title">Change ({{ selectedTimeframe }}h)</span>
+            <span class="title">Change ({{ timeframe }}h)</span>
             <Change size="big" />
         </div>
         <div class="topbar-item">
-            <span class="title">Volume ({{ selectedTimeframe }}h)</span>
+            <span class="title">Volume ({{ timeframe }}h)</span>
             <span class="value">$ 6.874.214</span>
         </div>
     </div>
@@ -37,35 +37,7 @@ export default {
         ChevronRightIcon
     },
     computed: {
-        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'pairSelectorVisibility', 'selectedAssetPrice']),
-        selectedBaseCurrency: {
-            get() {
-                return this.baseCurrency
-            }
-        },
-        selectedTimeframe: {
-            get() {
-                return this.timeframe
-            }
-        },
-        pairCounterpart: {
-            get() {
-                return this.counterpart
-            }
-        },
-        pairAsset: {
-            get() {
-                return this.asset
-            }
-        },
-        pairSelector: {
-            get() {
-                return this.pairSelectorVisbility
-            },
-            set(newValue) {
-                this.updatePairSelectorVisibility(newValue)
-            }
-        }
+        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'isPairSelectorVisible', 'selectedAssetPrice']),
     },
     methods: {
         ...mapMutations(['updatePairSelectorVisibility']),

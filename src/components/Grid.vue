@@ -1,7 +1,5 @@
 <script>
-import store from '../store'
 import Topbar from './Topbar.vue'
-import Tabs from './Tabs.vue'
 import Trades from './Trades.vue'
 import Operative from './Operative.vue'
 import Orderbook from './Orderbook.vue'
@@ -13,7 +11,6 @@ export default {
         Orderbook,
         DepthChart,
         Topbar,
-        Tabs,
         Operative,
         Trades,
         PairSelector,
@@ -27,9 +24,6 @@ export default {
 
     },
     computed: {
-        // series() {
-        //     return store.state.series.chart[0]
-        // },
     },
     methods: {
 
@@ -46,9 +40,7 @@ export default {
         </div>
 
         <div class="grid-item operative">
-            <Operative>
-
-            </Operative>
+            <Operative/>
         </div>
 
         <div class="grid-item orderbook">
@@ -67,9 +59,9 @@ export default {
             </div>
         </div>
         <div class="grid-item tabs-section">
-            <Tabs :expanded="false"
+            <!-- <Tabs :expanded="false"
                 :tabs="[{ name: 'Open orders', active: true }, { name: 'Filled orders', active: false }]">
-            </Tabs>
+            </Tabs> -->
         </div>
 
         <div class="grid-item trades">

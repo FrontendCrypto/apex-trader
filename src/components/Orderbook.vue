@@ -1,9 +1,12 @@
 <template>
     <div class="orderbook">
-        <!-- Orderbook chart -->
-        <!-- <div class="chart">
-        <canvas ref="chart"></canvas>
-      </div> -->
+        <!-- Orderbook  header -->
+        <div class="header">
+            <div></div>
+            <div class="sum"><span>Sum ({{ this.asset }})</span></div>
+            <div><span>Amount ({{ this.asset }})</span></div>
+            <div><span>Price ({{ this.baseCurrency }})</span></div>
+        </div>
 
         <!-- Bids side -->
         <div class="side bid">
@@ -52,7 +55,6 @@
 </template>
   
 <script>
-import store from '../store';
 import { mapGetters } from 'vuex';
 import Change from './Change.vue';
 import Price from './Price.vue';
@@ -79,22 +81,7 @@ export default {
         this.totalAmount = Math.max(totalBids, totalAsks);
     },
     computed: {
-        ...mapGetters(['bids', 'asks', 'baseCurrency']),
-        bids: {
-            get() {
-                return store.state.orderbook.bids;
-            },
-        },
-        asks: {
-            get() {
-                return store.state.orderbook.asks;
-            },
-        },
-        baseCurrency: {
-            get() {
-                return store.state.baseCurrency;
-            },
-        },
+        ...mapGetters(['bids', 'asks', 'baseCurrency', 'asset']),
     },
     methods: {
         /**
@@ -171,14 +158,32 @@ export default {
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 56px 1fr;
+    grid-template-rows: auto 1fr 56px 1fr;
     height: 100%;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 24px 72px 1fr 80px;
+    gap: 12px;
+    text-align: right;
+    padding: 8px 8px 8px 0;
+    span {
+        font-size: 10px;
+        display: block;
+    }
+    .sum{
+        text-align: left;
+    }
 }
 
 .side {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    .price{
+        text-align: right;
+    }
 }
 
 .bid {
@@ -209,15 +214,17 @@ export default {
 
 .row {
     display: grid;
-    grid-template-columns: 24px 72px 1fr 72px;
+    grid-template-columns: 24px 72px 1fr 80px;
     grid-template-rows: 24px;
     gap: 12px;
     position: relative;
+    padding-right: 8px;
 
-    &:hover{
+    &:hover {
         background-color: $buttonHover;
         cursor: pointer;
     }
+
     .row-bar {
         position: absolute;
         opacity: 0.1;
