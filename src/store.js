@@ -73,7 +73,13 @@ const store = createStore({
     },
     updateAsset(state, value) {
       state.asset = value
+    },
+    updateOperativeSelectedTab(state, value) {
+      state.operative.forEach((element) => {
+        element.selected = (element.slug === value);
+      });
     }
+    
   }
 })
 

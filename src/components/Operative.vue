@@ -27,7 +27,7 @@ export default {
 <template>
     <div class="operative-tabs">
         <div class="operative-tabs-bar">
-            <OperativeTabs :expanded="false">
+            <OperativeTabs :expanded="true">
             </OperativeTabs>
             <!-- <button class="operative-tabs-item active">
                 <span>Buy</span>

@@ -168,11 +168,13 @@ export default {
     gap: 12px;
     text-align: right;
     padding: 8px 8px 8px 0;
+
     span {
         font-size: 10px;
         display: block;
     }
-    .sum{
+
+    .sum {
         text-align: left;
     }
 }
@@ -181,7 +183,8 @@ export default {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    .price{
+
+    .price {
         text-align: right;
     }
 }
@@ -275,5 +278,4 @@ export default {
         align-items: center;
         gap: 12px;
     }
-}
-</style>
+}</style>
