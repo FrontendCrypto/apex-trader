@@ -5,10 +5,7 @@ import vue from '@vitejs/plugin-vue';
 
 // Configuration for Vite
 export default defineConfig({
-  plugins: [
-    // Use the Vue plugin
-    vue(),
-  ],
+  plugins: [vue()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)), // Set the alias for the source directory
