@@ -24,7 +24,7 @@ export default {
             get() {
                 return store.state.markets
             }
-        }
+        },
     },
     watch: {
         isVisible(newValue) {
@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         ...mapMutations(['updatePairSelectorVisibility', 'updateAsset']),
-        selectPair(value){
+        selectPair(value) {
             this.updateAsset(value)
             this.updatePairSelectorVisibility(false)
         },
@@ -56,7 +56,11 @@ export default {
                 easing: 'easeInOutQuad',
                 duration: 300
             });
-        }
+        },
+        getIconPath(ticker) {
+            const formattedTicker = ticker.toLowerCase()
+            return `src/assets/icons/svg/white/${formattedTicker}.svg`;
+        },
     },
 }
 </script>
@@ -84,20 +88,22 @@ export default {
                 </div>
             </div>
             <div class="row" v-for="pair in markets" :key="pair.ticker" @click="selectPair(pair.ticker)">
-                <div>
-                    <!-- https://vue-cryptoicon.netlify.app/ -->
-                    <span>{{ pair.ticker }}</span>
-                    <span>{{ pair.name }}</span>
+                <div class="asset-naming">
+                    <img class="icon" :src="getIconPath(pair.ticker)" />
+                    <div>
+                        <span>{{ pair.ticker }}</span>
+                        <span>{{ pair.name }}</span>
+                    </div>
                 </div>
-                <div>
+                <div class="row-element">
                     <span>{{ pair.volume.counterpart }}</span>
                     <span>{{ pair.volume.asset }} {{ pair.volume.ticker }}</span>
                 </div>
-                <div>
+                <div class="row-element">
                     <span>{{ pair.price.value }}</span>
                     <span>{{ pair.price.change }}</span>
                 </div>
-                <div>
+                <div class="row-element">
                     <Favorite :ticker="pair.ticker" :size="24" :favorite="pair.favorite"
                         @toggleFavorite="toggleFavorite(pair)" />
                 </div>
@@ -145,10 +151,25 @@ export default {
         cursor: pointer;
     }
 
-    >div {
+    .row-element {
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+
+    .asset-naming {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        >div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon {
+            width: 32px;
+        }
     }
 
     span {
