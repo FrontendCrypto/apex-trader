@@ -18,7 +18,7 @@
                 <!-- Bid amount -->
                 <span class="amount">{{ bid.amount }}</span>
                 <!-- Bid price -->
-                <span class="price">{{ this.getFormattedCurrency(bid.price) }}</span>
+                <span class="price">{{ this.getFormattedCurrency(this.baseCurrency, bid.price, 1) }}</span>
                 <!-- Bid row bar -->
                 <div class="row-bar" :style="{ width: getBidBarWidth(index) }"></div>
             </div>
@@ -46,7 +46,7 @@
                 <!-- Ask amount -->
                 <span class="amount">{{ ask.amount }}</span>
                 <!-- Ask price -->
-                <span class="price">{{ this.getFormattedCurrency(ask.price) }}</span>
+                <span class="price">{{ this.getFormattedCurrency(baseCurrency, ask.price) }}</span>
                 <!-- Ask row bar -->
                 <div class="row-bar" :style="{ width: getAskBarWidth(index) }"></div>
             </div>
@@ -58,7 +58,7 @@
 import { mapGetters } from 'vuex';
 import Change from './Change.vue';
 import Price from './Price.vue';
-import { formatCurrency } from '../helpers/helpers';
+import { getFormattedCurrency } from '../helpers/helpers';
 import { Bars2Icon } from '@heroicons/vue/24/solid'
 
 /**
@@ -84,15 +84,7 @@ export default {
         ...mapGetters(['bids', 'asks', 'baseCurrency', 'asset']),
     },
     methods: {
-        /**
-         * Formats the currency value based on the base currency.
-         * @param {number} value - The currency value to format.
-         * @returns {string} The formatted currency value.
-         */
-        getFormattedCurrency(value) {
-            const formattedCurrency = formatCurrency(this.baseCurrency, value, 1);
-            return formattedCurrency;
-        },
+        getFormattedCurrency,
 
         /**
          * Calculates the sum of bid amounts from the given index to the end of the bids list.

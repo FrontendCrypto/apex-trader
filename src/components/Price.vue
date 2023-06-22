@@ -1,10 +1,10 @@
 <template>
-    <span :class="[size, valueClass]">{{ getFormattedCurrency() }}</span>
+    <span :class="[size, valueClass]">{{ getFormattedCurrency(this.baseCurrency, this.selectedAssetPrice) }}</span>
 </template>
 <script>
 
 import { mapGetters } from 'vuex'
-import { formatCurrency } from '../helpers/helpers'
+import { getFormattedCurrency } from '../helpers/helpers'
 
 export default {
     props: {
@@ -18,10 +18,7 @@ export default {
         }
     },
     methods: {
-        getFormattedCurrency() {
-            const formattedCurrency = formatCurrency(this.baseCurrency, this.selectedAssetPrice )
-            return formattedCurrency
-        }
+        getFormattedCurrency,
     }
 }
 </script>

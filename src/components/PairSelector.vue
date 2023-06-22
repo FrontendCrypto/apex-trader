@@ -4,6 +4,7 @@ import anime from 'animejs';
 import Favorite from './Favorite.vue';
 import store from '../store';
 import { XMarkIcon } from '@heroicons/vue/24/solid'
+import { getFormattedCurrency } from '../helpers/helpers';
 
 export default {
     components: {
@@ -11,7 +12,7 @@ export default {
         XMarkIcon
     },
     computed: {
-        ...mapGetters(['isPairSelectorVisible', 'asset']),
+        ...mapGetters(['isPairSelectorVisible', 'asset', 'counterpart', 'timeframe', 'baseCurrency']),
         isVisible: {
             get() {
                 return this.isPairSelectorVisible;
@@ -32,13 +33,17 @@ export default {
         }
     },
     methods: {
+        getFormattedCurrency,
         ...mapMutations(['updatePairSelectorVisibility', 'updateAsset']),
         selectPair(value) {
             this.updateAsset(value)
             this.updatePairSelectorVisibility(false)
         },
-        toggleFavorite(pair) {
-            pair.favorite = !pair.favorite
+        isSelectedClass(ticker) {
+            return this.asset === ticker ? 'selected' : '';
+        },
+        handleFavoriteClick(pair) {
+            pair.favorite = !pair.favorite;
             // @todo store / save preferences
         },
         show() {
@@ -59,7 +64,7 @@ export default {
         },
         getIconPath(ticker) {
             const formattedTicker = ticker.toLowerCase()
-            return `src/assets/icons/svg/white/${formattedTicker}.svg`;
+            return `node_modules/cryptocurrency-icons/svg/white/${formattedTicker}.svg`;
         },
     },
 }
@@ -68,6 +73,7 @@ export default {
 <template>
     <div class="pair-selector">
         <div class="header">
+            <span class="title">Markets</span>
             <button class="button" @click="isVisible = false">
                 <XMarkIcon class="icon" />
             </button>
@@ -78,16 +84,17 @@ export default {
                     <span>Pair</span>
                 </div>
                 <div>
-                    <span>Volume</span>
+                    <span>Volume ({{ timeframe }}h)</span>
                 </div>
                 <div>
-                    <span>Price</span>
+                    <span>Price ({{ counterpart }})</span>
                 </div>
                 <div>
-                    <star-icon-solid class="icon" />
+                    <span>Favorite</span>
                 </div>
             </div>
-            <div class="row" v-for="pair in markets" :key="pair.ticker" @click="selectPair(pair.ticker)">
+            <div :class="['row', this.isSelectedClass(pair.ticker)]" v-for="pair in markets" :key="pair.ticker"
+                @click="selectPair(pair.ticker)">
                 <div class="asset-naming">
                     <img class="icon" :src="getIconPath(pair.ticker)" />
                     <div>
@@ -96,16 +103,16 @@ export default {
                     </div>
                 </div>
                 <div class="row-element">
-                    <span>{{ pair.volume.counterpart }}</span>
-                    <span>{{ pair.volume.asset }} {{ pair.volume.ticker }}</span>
+                    <span>{{ getFormattedCurrency(counterpart, pair.volume.counterpart, 1) }}</span>
+                    <span>{{ getFormattedCurrency(asset, pair.volume.asset) }}</span>
                 </div>
                 <div class="row-element">
-                    <span>{{ pair.price.value }}</span>
-                    <span>{{ pair.price.change }}</span>
+                    <span>{{ getFormattedCurrency(counterpart, pair.price.value) }}</span>
+                    <span>{{ pair.price.change }}%</span>
                 </div>
                 <div class="row-element">
                     <Favorite :ticker="pair.ticker" :size="24" :favorite="pair.favorite"
-                        @toggleFavorite="toggleFavorite(pair)" />
+                        @click.stop="handleFavoriteClick(pair)" />
                 </div>
             </div>
         </div>
@@ -117,7 +124,14 @@ export default {
 
 .header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+
+    .title {
+        font-size: 20px;
+        color: $surfaceContent;
+    }
 }
 
 .pair-selector {
@@ -149,6 +163,10 @@ export default {
     &:hover {
         background-color: $buttonHover;
         cursor: pointer;
+    }
+
+    &.selected {
+        background-color: darken($buttonHover, 50%);
     }
 
     .row-element {
