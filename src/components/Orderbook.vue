@@ -10,15 +10,23 @@
 
         <!-- Bids side -->
         <div class="side bid">
-            <div v-for="(bid, index) in bids.slice().reverse()" class="row" :key="bid.price">
+            <div v-for="(bid, index) in bids.slice().reverse()" class="row" :key="bid.price" @click="this.updateSelectedPrice(bid.price)">
                 <!-- Bid indicator -->
-                <span class="indicator" :style="{ opacity: getBidBarWidth(index) }"></span>
+                <div>
+                    <span class="indicator" :style="{ opacity: getBidBarWidth(index) }"></span>
+                </div>
                 <!-- Bid sum -->
-                <span class="sum">{{ calculateBidSum(index) }}</span>
+                <div>
+                    <span class="sum">{{ calculateBidSum(index) }}</span>
+                </div>
                 <!-- Bid amount -->
-                <span class="amount">{{ bid.amount }}</span>
+                <div>
+                    <span class="amount">{{ bid.amount }}</span>
+                </div>
                 <!-- Bid price -->
-                <span class="price">{{ this.getFormattedCurrency(this.baseCurrency, bid.price, 1) }}</span>
+                <div>
+                    <span class="price">{{ this.getFormattedCurrency(this.baseCurrency, bid.price, 1) }}</span>
+                </div>
                 <!-- Bid row bar -->
                 <div class="row-bar" :style="{ width: getBidBarWidth(index) }"></div>
             </div>
@@ -38,11 +46,15 @@
 
         <!-- Asks side -->
         <div class="side ask">
-            <div v-for="(ask, index) in asks" class="row" :key="ask.price">
+            <div v-for="(ask, index) in asks" class="row" :key="ask.price" @click="this.updateSelectedPrice(ask.price)">
                 <!-- Ask indicator -->
-                <span class="indicator" :style="{ opacity: getAskBarWidth(index) }"></span>
+                <div>
+                    <span class="indicator" :style="{ opacity: getAskBarWidth(index) }"></span>
+                </div>
                 <!-- Ask sum -->
-                <span class="sum">{{ calculateAskSum(index) }}</span>
+                <div>
+                    <span class="sum">{{ calculateAskSum(index) }}</span>
+                </div>
                 <!-- Ask amount -->
                 <span class="amount">{{ ask.amount }}</span>
                 <!-- Ask price -->
@@ -55,7 +67,7 @@
 </template>
   
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Change from './Change.vue';
 import Price from './Price.vue';
 import { getFormattedCurrency } from '../helpers/helpers';
@@ -84,8 +96,8 @@ export default {
         ...mapGetters(['bids', 'asks', 'baseCurrency', 'asset']),
     },
     methods: {
+        ...mapMutations(['updateSelectedPrice']),
         getFormattedCurrency,
-
         /**
          * Calculates the sum of bid amounts from the given index to the end of the bids list.
          * @param {number} index - The starting index.
@@ -210,10 +222,15 @@ export default {
 .row {
     display: grid;
     grid-template-columns: 24px 72px 1fr 80px;
-    grid-template-rows: 24px;
+    grid-template-rows: 20px;
     gap: 12px;
     position: relative;
     padding-right: 8px;
+
+    >div:not(.row-bar) {
+        display: flex;
+        align-items: center;
+    }
 
     &:hover {
         background-color: $buttonHover;
@@ -231,7 +248,7 @@ export default {
     }
 
     span {
-        font-size: 13px;
+        font-size: 12px;
         z-index: 1;
     }
 
@@ -270,4 +287,5 @@ export default {
         align-items: center;
         gap: 12px;
     }
-}</style>
+}
+</style>

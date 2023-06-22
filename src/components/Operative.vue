@@ -14,99 +14,103 @@
             </div>
         </div>
         <div class="content">
-            <form class="order-form">
-                <div>
-                    <div class="order-type form-element">
-                        <label for="orderType">Order type</label>
-                        <select id="orderType" name="orderType" v-model="orderType">
-                            <option v-for="type in orderTypes" :key="type.value" :value="type.value">{{ type.label }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div v-if="orderType === 'limit'">
-                        <div class="form-element">
-                            <label for="quantity">Quantity ({{ asset }})</label>
-                            <input type="number" name="" id="quantity" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="price">Price ({{ counterpart }})</label>
-                            <input type="number" name="" id="price" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="total">Total (incl. fee) ({{ counterpart }})</label>
-                            <input type="number" name="" id="total" value="">
-                        </div>
-                    </div>
-
-                    <div v-if="orderType === 'stopLimit'">
-                        <div class="form-element">
-                            <label for="triggerPrice">Trigger Price {{ counterpart }}</label>
-                            <input type="number" name="triggerPrice" id="triggerPrice" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="quantity">Quantity {{ asset }}</label>
-                            <input type="number" name="quantity" id="quantity" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="price">Price {{ counterpart }}</label>
-                            <input type="number" name="price" id="price" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="total">Total (incl. fee) ({{ counterpart }})</label>
-                            <input type="number" name="" id="total" value="">
-                        </div>
-                    </div>
-
-                    <div v-if="orderType === 'market'">
-                        <div class="form-element">
-                            <label for="quantity">Quantity aprox. {{ asset }}</label>
-                            <input type="number" name="" id="quantity" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="totalPrice">Total Price {{ counterpart }}</label>
-                            <input type="number" name="" id="totalPrice" value="">
-                        </div>
-                    </div>
-
-                    <div v-if="orderType === 'oco'">
-                        <div class="form-element">
-                            <label for="price">Price {{ counterpart }}</label>
-                            <input type="number" name="" id="price" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="stop">Stop {{ counterpart }}</label>
-                            <input type="number" name="" id="stop" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="limit">Limit {{ counterpart }}</label>
-                            <input type="number" name="" id="limit" value="">
-                        </div>
-                        <div class="form-element">
-                            <label for="quantity">Quantity {{ asset }}</label>
-                            <input type="number" name="" id="quantity" value="">
-                        </div>
-                    </div>
-                    <button class="button w-100">
-                        <span>Buy</span>
-                    </button>
+            <div class="upper">
+                <div class="order-type form-element">
+                    <label for="orderType">Order type</label>
+                    <select id="orderType" name="orderType" v-model="orderType">
+                        <option v-for="type in orderTypes" :key="type.value" :value="type.value">
+                            {{ type.label }}
+                        </option>
+                    </select>
                 </div>
-                <div class="advanced">
-                    <span class="section-title">Advanced options</span>
+
+                <div v-if="orderType === 'limit'">
                     <div class="form-element">
-                        <label for="timeInForce">Time in force</label>
-                        <select name="" id="timeInForce">
-                            <option selected>Good Til Cancelled</option>
-                            <option>Inmediate or Cancel</option>
-                            <option>Fill or Kill</option>
-                        </select>
+                        <label for="quantity">Quantity ({{ asset }})</label>
+                        <input type="number" name="" id="quantity" value="">
                     </div>
                     <div class="form-element">
-                        <label for="postOnly">Post Only?</label>
-                        <input type="checkbox" id="postOnly">
+                        <label for="price">Price ({{ counterpart }})</label>
+                        <input :class="{ 'animate-background': animatePriceBackground }" type="number" name="" id="price"
+                            :value="selectedPrice">
+                    </div>
+                    <div class="form-element">
+                        <label for="total">Total (incl. fee) ({{ counterpart }})</label>
+                        <input type="number" name="" id="total" value="">
                     </div>
                 </div>
-            </form>
+
+                <div v-if="orderType === 'stopLimit'">
+                    <div class="form-element">
+                        <label for="triggerPrice">Trigger Price {{ counterpart }}</label>
+                        <input type="number" name="triggerPrice" id="triggerPrice" value="">
+                    </div>
+                    <div class="form-element">
+                        <label for="quantity">Quantity {{ asset }}</label>
+                        <input type="number" name="quantity" id="quantity" value="">
+                    </div>
+                    <div class="form-element">
+                        <label for="price">Price {{ counterpart }}</label>
+                        <input :class="{ 'animate-background': animatePriceBackground }" type="number" name="price"
+                            id="price" :value="selectedPrice">
+                    </div>
+                    <div class="form-element">
+                        <label for="total">Total (incl. fee) ({{ counterpart }})</label>
+                        <input type="number" name="" id="total" value="">
+                    </div>
+                </div>
+
+                <div v-if="orderType === 'market'">
+                    <div class="form-element">
+                        <label for="quantity">Quantity aprox. {{ asset }}</label>
+                        <input type="number" name="" id="quantity" value="">
+                    </div>
+                    <div class="form-element">
+                        <label for="totalPrice">Total Price {{ counterpart }}</label>
+                        <input type="number" name="" id="totalPrice" value="">
+                    </div>
+                </div>
+
+                <div v-if="orderType === 'oco'">
+                    <div class="form-element">
+                        <label for="price">Price {{ counterpart }}</label>
+                        <input :class="{ 'animate-background': animatePriceBackground }" type="number" name="" id="price"
+                            :value="selectedPrice">
+                    </div>
+                    <div class="form-element">
+                        <label for="stop">Stop {{ counterpart }}</label>
+                        <input type="number" name="" id="stop" value="">
+                    </div>
+                    <div class="form-element">
+                        <label for="limit">Limit {{ counterpart }}</label>
+                        <input type="number" name="" id="limit" value="">
+                    </div>
+                    <div class="form-element">
+                        <label for="quantity">Quantity {{ asset }}</label>
+                        <input type="number" name="" id="quantity" value="">
+                    </div>
+                </div>
+
+                <button :class="['button', 'w-100', tab.slug]" v-show="tab.selected" v-for="tab in operative"
+                    @click="preventDefault" :key="tab.slug">
+                    <span>{{ tab.name }}</span>
+                </button>
+            </div>
+            <div class="lower">
+                <span class="section-title">Advanced options</span>
+                <div class="form-element">
+                    <label for="timeInForce">Time in force</label>
+                    <select name="" id="timeInForce">
+                        <option selected>Good Til Cancelled</option>
+                        <option>Inmediate or Cancel</option>
+                        <option>Fill or Kill</option>
+                    </select>
+                </div>
+                <div class="form-element">
+                    <label for="postOnly">Post Only?</label>
+                    <input type="checkbox" id="postOnly">
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -116,6 +120,7 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
     data() {
         return {
+            animatePriceBackground: false,
             orderType: 'limit',
             orderTypes: [
                 { value: 'limit', label: 'Limit' },
@@ -126,16 +131,29 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['operative', 'asset', 'counterpart']),
+        ...mapGetters(['operative', 'asset', 'counterpart', 'selectedPrice']),
     },
     methods: {
-        ...mapMutations(['updateOperativeSelectedTab']),
+        ...mapMutations(['updateOperativeSelectedTab', 'updateSelectedPrice']),
+        runAnimation() {
+            this.animatePriceBackground = true;
+            setTimeout(() => {
+                this.animatePriceBackground = false;
+            }, 500);
+        },
     },
+    watch: {
+        selectedPrice() {
+            this.runAnimation()
+        }
+    }
 };
 </script>
 
 <style scoped lang="scss">
 @import '@/assets/variables.scss';
+
+
 
 .tabs {
     display: grid;
@@ -157,6 +175,19 @@ export default {
     flex-direction: row;
     height: 100%;
     border-bottom: 1px solid rgb(38, 43, 56);
+}
+
+.button {
+    font-size: 20px;
+    font-weight: bold;
+
+    &.buy {
+        background-color: rgba($positive, 0.1);
+    }
+
+    &.sell {
+        background-color: rgba($negative, 0.1);
+    }
 }
 
 .tabbar-item {
@@ -244,15 +275,16 @@ export default {
 
 .content {
     padding: 12px;
-}
-
-.order-form {
     display: flex;
-    gap: 24px;
     flex-direction: column;
+    .upper{
+        flex: 1;
+    }
 }
 
 .section-title {
     font-size: 18px;
+    margin-bottom: 24px;
+    display: block;
 }
 </style>

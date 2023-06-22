@@ -19,7 +19,7 @@
     "animejs": "^3.2.1",
     "chart.js": "^4.3.0",
     "cryptocurrency-icons": "^0.18.1",
-    "normalize.css": "^8.0.1",
+    "modern-normalize": "^2.0.0",
     "pinia": "^2.1.4",
     "sass": "^1.63.6",
     "vue-chartjs": "^5.2.0",
