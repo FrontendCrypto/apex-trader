@@ -62,10 +62,10 @@ export default {
             </button>
         </div>
         <div class="content">
-            <div class="order-type form-element">
+            <div class="form-element">
                 <label for="baseCurrency">Base currency</label>
                 <select id="baseCurrency" name="baseCurrency" @change="onChange($event)">
-                    <option v-for="currency in currencies" :key="currency.slug" :value="currency.slug">
+                    <option v-for="currency in currencies" :key="currency.name" :value="currency.name">
                         {{ currency.name }}
                     </option>
                 </select>

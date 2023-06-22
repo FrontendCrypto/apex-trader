@@ -161,6 +161,7 @@ export default {
     width: 100%;
     height: 100%;
 }
+
 #bidChartCanvas{
     transform: scaleY(-1);
 }

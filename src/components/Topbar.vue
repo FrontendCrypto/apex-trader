@@ -12,7 +12,7 @@
                 </button>
             </div>
             <div class="topbar-item">
-                <span class="title">Price ({{ baseCurrency }})</span>
+                <span class="title">Price ({{ counterpart }})</span>
                 <Price size="big" />
             </div>
             <div class="topbar-item">
@@ -46,7 +46,7 @@ export default {
         Cog8ToothIcon
     },
     computed: {
-        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'selectedAssetPrice', 'assetIconPath']),
+        ...mapGetters(['timeframe', 'counterpart', 'asset', 'selectedAssetPrice', 'assetIconPath']),
     },
     methods: {
         ...mapMutations(['updatePairSelectorVisibility', 'updateSettingsVisibility']),

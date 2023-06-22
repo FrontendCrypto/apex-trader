@@ -3,9 +3,9 @@
         <!-- Orderbook  header -->
         <div class="header">
             <div></div>
-            <div class="sum"><span>Sum ({{ this.asset }})</span></div>
-            <div><span>Amount ({{ this.asset }})</span></div>
-            <div><span>Price ({{ this.baseCurrency }})</span></div>
+            <div class="sum"><span>Sum ({{ asset }})</span></div>
+            <div><span>Amount ({{ asset }})</span></div>
+            <div><span>Price ({{ counterpart }})</span></div>
         </div>
 
         <!-- Bids side -->
@@ -93,7 +93,7 @@ export default {
         this.totalAmount = Math.max(totalBids, totalAsks);
     },
     computed: {
-        ...mapGetters(['bids', 'asks', 'baseCurrency', 'asset']),
+        ...mapGetters(['bids', 'asks', 'baseCurrency', 'asset', 'counterpart']),
     },
     methods: {
         ...mapMutations(['updateSelectedPrice']),
@@ -168,7 +168,7 @@ export default {
 
 .header {
     display: grid;
-    grid-template-columns: 24px 72px 1fr 80px;
+    grid-template-columns: 20px 72px 1fr 80px;
     gap: 12px;
     text-align: right;
     padding: 8px 8px 8px 0;
@@ -190,6 +190,10 @@ export default {
 
     .price {
         text-align: right;
+    }
+    .indicator{
+        width: 100%;
+        height: 100%
     }
 }
 
@@ -221,7 +225,7 @@ export default {
 
 .row {
     display: grid;
-    grid-template-columns: 24px 72px 1fr 80px;
+    grid-template-columns: 24px 72px 1fr 1fr;
     grid-template-rows: 20px;
     gap: 12px;
     position: relative;

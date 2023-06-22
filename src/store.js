@@ -18,11 +18,9 @@ const store = createStore({
       currencies: [
         {
           name: 'USD',
-          slug: 'usd',
         },
         {
           name: 'EUR',
-          slug: 'eur',
         }
       ],
       asset: 'BTC',
