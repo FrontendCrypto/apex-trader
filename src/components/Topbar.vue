@@ -5,6 +5,7 @@
         </div>
         <div class="topbar-item">
             <button class="button" @click="this.updatePairSelectorVisibility(true);">
+                <img class="asset-icon" :src="this.assetIconPath" :alt="`${this.asset} icon`" />
                 <span>{{ asset }}-{{ counterpart }}</span>
                 <ChevronRightIcon class="icon" />
             </button>
@@ -37,7 +38,7 @@ export default {
         ChevronRightIcon
     },
     computed: {
-        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'isPairSelectorVisible', 'selectedAssetPrice']),
+        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'isPairSelectorVisible', 'selectedAssetPrice', 'assetIconPath']),
     },
     methods: {
         ...mapMutations(['updatePairSelectorVisibility']),
@@ -65,7 +66,12 @@ export default {
     border-width: 0 1px 0 0;
     border-style: solid;
     height: 100%;
-    gap: 4px
+    gap: 4px;
+}
+
+.asset-icon {
+    width: 24px;
+    margin-right: 4px;
 }
 
 .title {

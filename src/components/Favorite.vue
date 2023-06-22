@@ -8,7 +8,10 @@ export default {
         starIconSolid: StarIconSolid,
     },
     props: {
-        ticker: String,
+        ticker: {
+            default: 'BTC',
+            type: String
+        },
         favorite: Boolean,
         size: Number
     },
@@ -21,7 +24,7 @@ export default {
 </script>
 
 <template>
-    <button @click="this.$emit('toggleFavorite')">
+    <button>
         <star-icon-solid v-if="favorite" class="icon favorite" :style="styles" />
         <star-icon-outlined v-else class="icon" :style="styles" />
     </button>

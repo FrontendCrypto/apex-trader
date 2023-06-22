@@ -10,7 +10,7 @@
                 <tr v-for="item in trades" class="row" :key="item.time">
                     <td class="time">{{ item.time }}</td>
                     <td class="amount">{{ item.amount }}</td>
-                    <td class="price">{{ item.price }}</td>
+                    <td class="price">{{ getFormattedCurrency(baseCurrency, item.price) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -18,16 +18,16 @@
 </template>
   
 <script>
-import store from '../store'
+import { mapGetters } from 'vuex'
+import { getFormattedCurrency } from '../helpers/helpers'
 
 export default {
-    mounted() {
-    },
     computed: {
-        trades() {
-            return store.state.trades
-        },
+        ...mapGetters(['trades', 'baseCurrency', 'asset']),
     },
+    methods:{
+        getFormattedCurrency,
+    }
 }
 </script>
 

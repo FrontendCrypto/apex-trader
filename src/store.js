@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 import { orderbook } from './data/orderbook'
 import { trades } from './data/trades'
 import { markets } from './data/markets'
+
 const store = createStore({
   state() {
     return {
@@ -65,6 +66,13 @@ const store = createStore({
     },
     operative(state) {
       return state.operative
+    },
+    assetIconPath(state) {
+      const slug = state.asset.toLowerCase()
+      return `node_modules/cryptocurrency-icons/svg/white/${slug}.svg`;
+    },
+    trades(state){
+      return state.trades
     }
   },
   mutations: {
@@ -79,7 +87,7 @@ const store = createStore({
         element.selected = (element.slug === value);
       });
     }
-    
+
   }
 })
 
