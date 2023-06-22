@@ -1,5 +1,4 @@
 <script>
-import store from '../store'
 import Chart from 'chart.js/auto'
 import { mapGetters } from 'vuex'
 

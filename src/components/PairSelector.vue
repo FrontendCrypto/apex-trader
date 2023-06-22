@@ -71,14 +71,14 @@ export default {
 </script>
 
 <template>
-    <div class="pair-selector">
+    <div class="panel pair-selector">
         <div class="header">
             <span class="title">Markets</span>
             <button class="button" @click="isVisible = false">
                 <XMarkIcon class="icon" />
             </button>
         </div>
-        <div class="markets">
+        <div class="content">
             <div class="row markets-header">
                 <div>
                     <span>Pair</span>
@@ -135,14 +135,8 @@ export default {
 }
 
 .pair-selector {
-    position: absolute;
-    height: 100vh;
-    background-color: $surfaceHigh;
     width: 500px;
     left: -500px;
-    padding: 16px 0;
-    z-index: 2;
-    box-sizing: border-box;
 }
 
 .markets {
@@ -160,7 +154,7 @@ export default {
     padding: 8px 16px;
     box-sizing: border-box;
 
-    &:hover {
+    &:not(.markets-header):hover {
         background-color: $buttonHover;
         cursor: pointer;
     }

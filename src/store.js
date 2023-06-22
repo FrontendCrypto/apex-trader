@@ -1,5 +1,4 @@
 import { createStore } from 'vuex'
-// import chart from './data/chart'
 import { orderbook } from './data/orderbook'
 import { trades } from './data/trades'
 import { markets } from './data/markets'
@@ -11,7 +10,21 @@ const store = createStore({
       pairSelector: {
         visible: false
       },
+      settings: {
+        visible: false
+      },
+      selectedPrice: null,
       baseCurrency: 'USD',
+      currencies: [
+        {
+          name: 'USD',
+          slug: 'usd',
+        },
+        {
+          name: 'EUR',
+          slug: 'eur',
+        }
+      ],
       asset: 'BTC',
       counterpart: 'USD',
       orderbook,
@@ -38,6 +51,9 @@ const store = createStore({
     isPairSelectorVisible(state) {
       return state.pairSelector.visible
     },
+    isSettingsVisible(state) {
+      return state.settings.visible
+    },
     selectedAssetPrice(state) {
       const selectedMarket = state.markets.find(market => market.ticker === state.asset);
       return selectedMarket ? selectedMarket.price.value : null;
@@ -48,6 +64,9 @@ const store = createStore({
     },
     baseCurrency(state) {
       return state.baseCurrency
+    },
+    currencies(state) {
+      return state.currencies
     },
     timeframe(state) {
       return state.timeframe.selected
@@ -71,13 +90,19 @@ const store = createStore({
       const slug = state.asset.toLowerCase()
       return `node_modules/cryptocurrency-icons/svg/white/${slug}.svg`;
     },
-    trades(state){
+    trades(state) {
       return state.trades
+    },
+    selectedPrice(state) {
+      return state.selectedPrice
     }
   },
   mutations: {
     updatePairSelectorVisibility(state, value) {
       state.pairSelector.visible = value
+    },
+    updateSettingsVisibility(state, value) {
+      state.settings.visible = value
     },
     updateAsset(state, value) {
       state.asset = value
@@ -86,8 +111,13 @@ const store = createStore({
       state.operative.forEach((element) => {
         element.selected = (element.slug === value);
       });
-    }
-
+    },
+    updateSelectedPrice(state, value) {
+      state.selectedPrice = value
+    },
+    updateBaseCurrency(state, value) {
+      state.baseCurrency = value
+    },
   }
 })
 

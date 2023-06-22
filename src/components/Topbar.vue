@@ -1,26 +1,33 @@
 <template>
     <div class="topbar">
-        <div class="topbar-item topbar-logo">
-            <small>ApexTrader</small>
+        <div class="left">
+            <div class="topbar-item topbar-logo">
+                <small>ApexTrader</small>
+            </div>
+            <div class="topbar-item">
+                <button class="button" @click="this.updatePairSelectorVisibility(true);">
+                    <img class="asset-icon" :src="this.assetIconPath" :alt="`${this.asset} icon`" />
+                    <span>{{ asset }}-{{ counterpart }}</span>
+                    <ChevronRightIcon class="icon" />
+                </button>
+            </div>
+            <div class="topbar-item">
+                <span class="title">Price ({{ baseCurrency }})</span>
+                <Price size="big" />
+            </div>
+            <div class="topbar-item">
+                <span class="title">Change ({{ timeframe }}h)</span>
+                <Change size="big" />
+            </div>
+            <div class="topbar-item">
+                <span class="title">Volume ({{ timeframe }}h)</span>
+                <span class="value">$ 6.874.214</span>
+            </div>
         </div>
-        <div class="topbar-item">
-            <button class="button" @click="this.updatePairSelectorVisibility(true);">
-                <img class="asset-icon" :src="this.assetIconPath" :alt="`${this.asset} icon`" />
-                <span>{{ asset }}-{{ counterpart }}</span>
-                <ChevronRightIcon class="icon" />
+        <div class="right">
+            <button class="button settings-button" @click="this.updateSettingsVisibility(true)">
+                <Cog8ToothIcon class="icon" />
             </button>
-        </div>
-        <div class="topbar-item">
-            <span class="title">Price ({{ baseCurrency }})</span>
-            <Price size="big" />
-        </div>
-        <div class="topbar-item">
-            <span class="title">Change ({{ timeframe }}h)</span>
-            <Change size="big" />
-        </div>
-        <div class="topbar-item">
-            <span class="title">Volume ({{ timeframe }}h)</span>
-            <span class="value">$ 6.874.214</span>
         </div>
     </div>
 </template>
@@ -29,19 +36,20 @@
 import Change from './Change.vue'
 import Price from './Price.vue';
 import { mapGetters, mapMutations } from 'vuex'
-import { ChevronRightIcon } from '@heroicons/vue/24/solid'
+import { ChevronRightIcon, Cog8ToothIcon } from '@heroicons/vue/24/solid'
 
 export default {
     components: {
         Change,
         Price,
-        ChevronRightIcon
+        ChevronRightIcon,
+        Cog8ToothIcon
     },
     computed: {
-        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'isPairSelectorVisible', 'selectedAssetPrice', 'assetIconPath']),
+        ...mapGetters(['baseCurrency', 'timeframe', 'counterpart', 'asset', 'selectedAssetPrice', 'assetIconPath']),
     },
     methods: {
-        ...mapMutations(['updatePairSelectorVisibility']),
+        ...mapMutations(['updatePairSelectorVisibility', 'updateSettingsVisibility']),
     }
 }
 </script>
@@ -53,6 +61,17 @@ export default {
     display: flex;
     flex-direction: row;
     height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+
+    .left,
+    .right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
+    }
 }
 
 .topbar-item {

@@ -44,7 +44,7 @@ export default {
 
     td,
     th {
-        font-size: 13px;
+        font-size: 12px;
     }
 }
 

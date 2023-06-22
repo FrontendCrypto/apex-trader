@@ -5,6 +5,7 @@ import Operative from './Operative.vue'
 import Orderbook from './Orderbook.vue'
 import DepthChart from './DepthChart.vue'
 import PairSelector from './PairSelector.vue'
+import Settings from './Settings.vue'
 
 export default {
     components: {
@@ -14,6 +15,7 @@ export default {
         Operative,
         Trades,
         PairSelector,
+        Settings
     },
     data() {
         return {
@@ -33,6 +35,7 @@ export default {
 
 <template>
     <PairSelector />
+    <Settings />
     <div class="grid">
 
         <div class="topbar">
@@ -40,7 +43,7 @@ export default {
         </div>
 
         <div class="grid-item operative">
-            <Operative/>
+            <Operative />
         </div>
 
         <div class="grid-item orderbook">
