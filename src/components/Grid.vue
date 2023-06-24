@@ -6,6 +6,7 @@ import Orderbook from './Orderbook.vue'
 import DepthChart from './DepthChart.vue'
 import PairSelector from './PairSelector.vue'
 import Settings from './Settings.vue'
+import Tabs from './Tabs.vue'
 
 export default {
     components: {
@@ -15,7 +16,8 @@ export default {
         Operative,
         Trades,
         PairSelector,
-        Settings
+        Settings,
+        Tabs
     },
     data() {
         return {
@@ -62,9 +64,7 @@ export default {
             </div>
         </div>
         <div class="grid-item tabs-section">
-            <!-- <Tabs :expanded="false"
-                :tabs="[{ name: 'Open orders', active: true }, { name: 'Filled orders', active: false }]">
-            </Tabs> -->
+            <Tabs />
         </div>
 
         <div class="grid-item trades">

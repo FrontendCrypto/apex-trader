@@ -2,7 +2,7 @@
     <div class="topbar">
         <div class="left">
             <div class="topbar-item topbar-logo">
-                <small>ApexTrader</small>
+                <img class="logo" src="@/assets/brand/icon.svg" alt="Logo" />
             </div>
             <div class="topbar-item">
                 <button class="button" @click="this.updatePairSelectorVisibility(true);">
@@ -43,7 +43,7 @@ export default {
         Change,
         Price,
         ChevronRightIcon,
-        Cog8ToothIcon
+        Cog8ToothIcon,
     },
     computed: {
         ...mapGetters(['timeframe', 'counterpart', 'asset', 'selectedAssetPrice', 'assetIconPath']),
@@ -91,6 +91,10 @@ export default {
 .asset-icon {
     width: 24px;
     margin-right: 4px;
+}
+
+.logo {
+    height: 32px;
 }
 
 .title {

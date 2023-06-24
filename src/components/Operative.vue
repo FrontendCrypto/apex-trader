@@ -153,8 +153,6 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/variables.scss';
 
-
-
 .tabs {
     display: grid;
     grid-template-rows: 48px 1fr;
@@ -190,40 +188,7 @@ export default {
     }
 }
 
-.tabbar-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 0 16px;
-    color: $surfaceContent;
-    border-color: rgb(38, 43, 56);
-    border-width: 0 1px 0 0;
-    border-style: solid;
-    height: 100%;
-    gap: 4px;
-    font-size: 14px;
-    transition: 0.2s ease-in-out;
-    background-color: transparent;
-    border: 0;
-    border-bottom: 3px solid transparent;
 
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
-
-    &.active {
-        background-color: rgba(255, 255, 255, 0.05);
-
-        &.buy {
-            border-color: rgba(118, 209, 170, 1);
-        }
-
-        &.sell {
-            border-color: rgba(173, 155, 227, 1);
-        }
-    }
-}
 
 .operative-tabs {
     display: grid;
