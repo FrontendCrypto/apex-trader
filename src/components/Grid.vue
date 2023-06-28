@@ -6,6 +6,7 @@ import Orderbook from './Orderbook.vue'
 import DepthChart from './DepthChart.vue'
 import PairSelector from './PairSelector.vue'
 import Settings from './Settings.vue'
+import Chart from './Chart.vue';
 
 export default {
     components: {
@@ -15,12 +16,13 @@ export default {
         Operative,
         Trades,
         PairSelector,
-        Settings
+        Settings,
+        Chart
     },
     data() {
         return {
-            tab: null,
-        }
+            
+        };
     },
     props: {
 
@@ -54,7 +56,9 @@ export default {
                                                                                                                                                 </div> -->
 
         <div class="grid-item chart">
-            <div class="price-chart">Price</div>
+            <div class="price-chart">
+                <Chart :options="chartOptions" />
+            </div>
             <div class="depth-chart">
                 <div class="depth-chart-content">
                     <DepthChart />

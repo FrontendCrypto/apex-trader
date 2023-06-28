@@ -19,6 +19,8 @@
     "animejs": "^3.2.1",
     "chart.js": "^4.3.0",
     "cryptocurrency-icons": "^0.18.1",
+    "highcharts": "^11.1.0",
+    "highcharts-vue": "^1.4.2",
     "modern-normalize": "^2.0.0",
     "pinia": "^2.1.4",
     "sass": "^1.63.6",
