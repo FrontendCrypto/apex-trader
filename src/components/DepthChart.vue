@@ -1,119 +1,38 @@
+<template>
+    <div class="depth-chart">
+        <div class="bid-chart">
+            <div id="bidChartCanvas" class="chart-canvas"></div>
+        </div>
+        <div class="ask-chart">
+            <div id="askChartCanvas" class="chart-canvas"></div>
+        </div>
+    </div>
+</template>
+  
 <script>
-import Chart from 'chart.js/auto'
-import { mapGetters } from 'vuex'
+import Highcharts from 'highcharts';
+import HighchartsMore from 'highcharts/highcharts-more';
+import HighchartsSolidGauge from 'highcharts/modules/solid-gauge';
+import { orderbook } from '../data/orderbook.js';
+
+// Import the Highcharts styles if needed
+import 'highcharts/css/highcharts.css';
+
+// Initialize the modules
+HighchartsMore(Highcharts);
+HighchartsSolidGauge(Highcharts);
 
 export default {
     mounted() {
-        const bidsData = this.calculateCumulativeData(this.bids);
-        const asksData = this.calculateCumulativeData(this.asks);
-
-        const ctxBid = document.getElementById('bidChartCanvas').getContext('2d');
-        const ctxAsk = document.getElementById('askChartCanvas').getContext('2d');
-
-        new Chart(ctxBid, {
-            type: 'line',
-            data: {
-                datasets: [
-                    {
-                        label: 'Bids',
-                        data: bidsData,
-                        borderColor: 'rgba(118, 209, 170, 1)',
-                        backgroundColor: 'rgba(118, 209, 170, 0.1)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 1,
-                        pointRadius: 0,
-                        stepped: 'before' // Stepline
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'top',
-                        min: Math.min(...bidsData.map(data => data.x)),
-                        max: Math.max(...bidsData.map(data => data.x)),
-                        ticks: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        type: 'linear',
-                        position: 'right',
-                        min: Math.min(...bidsData.map(data => data.y)),
-                        max: Math.max(...bidsData.map(data => data.y)),
-                        ticks: {
-                            display: false
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
-            }
-        });
-
-        new Chart(ctxAsk, {
-            type: 'line',
-            data: {
-                datasets: [
-                    {
-                        label: 'Asks',
-                        data: asksData,
-                        borderColor: 'rgba(173, 155, 227, 1)',
-                        backgroundColor: 'rgba(173, 155, 227, 0.1)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 1,
-                        pointRadius: 0,
-                        stepped: 'before' // Stepline
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom',
-                        min: Math.min(...asksData.map(data => data.x)),
-                        max: Math.max(...asksData.map(data => data.x)),
-                        ticks: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        type: 'linear',
-                        position: 'right',
-                        min: Math.min(...asksData.map(data => data.y)),
-                        max: Math.max(...asksData.map(data => data.y)),
-                        ticks: {
-                            display: false
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
-            }
-        });
+        this.generateDepthChart();
     },
     computed: {
-        ...mapGetters(['bids', 'asks']),
+        bids() {
+            return orderbook.bids;
+        },
+        asks() {
+            return orderbook.asks;
+        },
     },
     methods: {
         calculateCumulativeData(data) {
@@ -123,24 +42,133 @@ export default {
                 cumulativeSum += item.amount;
                 return { x: cumulativeSum, y: price };
             });
+        },
+        generateDepthChart() {
+            const bidsData = this.calculateCumulativeData(this.bids);
+            const asksData = this.calculateCumulativeData(this.asks);
+
+            Highcharts.chart('bidChartCanvas', {
+                chart: {
+                    type: 'area',
+                    inverted: true,
+                    margin: 0,
+                    spacing: [0, 0, 0, 0]
+                },
+                title: {
+                    text: null
+                },
+                xAxis: {
+                    reversed: true,
+                    min: 0,
+                    max: Math.max(...bidsData.map((data) => data.x)),
+                    visible: false
+                },
+                yAxis: {
+                    reversed: false,
+                    min: Math.min(...bidsData.map((data) => data.y)),
+                    max: Math.max(...bidsData.map((data) => data.y)),
+                    visible: false
+                },
+                plotOptions: {
+                    area: {
+                        marker: {
+                            enabled: false
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                series: [
+                    {
+                        name: 'Bids',
+                        data: bidsData,
+                        color: 'rgba(118, 209, 170, 0.1)',
+                        lineColor: 'rgba(118, 209, 170, 1)',
+                        fillOpacity: 0.5
+                    }
+                ],
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                }
+            });
+
+            Highcharts.chart('askChartCanvas', {
+                chart: {
+                    type: 'area',
+                    inverted: true,
+                    margin: 0,
+                    spacing: [0, 0, 0, 0],
+                },
+                title: {
+                    text: null
+                },
+                xAxis: {
+                    reversed: false,
+                    min: 0,
+                    max: Math.max(...asksData.map((data) => data.x)),
+                    visible: false
+                },
+                yAxis: {
+                    reversed: false,
+                    min: Math.min(...asksData.map((data) => data.y)),
+                    max: Math.max(...asksData.map((data) => data.y)),
+                    visible: false
+                },
+                plotOptions: {
+                    area: {
+                        marker: {
+                            enabled: false
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                series: [
+                    {
+                        name: 'Asks',
+                        data: asksData,
+                        color: 'rgba(173, 155, 227, 0.1)',
+                        lineColor: 'rgba(173, 155, 227, 1)',
+                        fillOpacity: 0.5
+                    }
+                ],
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                }
+            });
         }
     }
+};
+</script>
+  
+<style>
+.highcharts-background {
+    background-color: transparent !important;
+    fill: transparent !important;
 }
 
-</script>
-
-<template>
-    <div class="depth-chart">
-         <div class="bid-chart">
-                <canvas id="bidChartCanvas" class="chart-canvas"></canvas>
-            </div>
-        <div class="ask-chart">
-            <canvas id="askChartCanvas" class="chart-canvas"></canvas>
-        </div>
-    </div>
-</template>
-
-<style>
 .depth-chart {
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -161,8 +189,5 @@ export default {
     width: 100%;
     height: 100%;
 }
-
-#bidChartCanvas{
-    transform: scaleY(-1);
-}
 </style>
+  

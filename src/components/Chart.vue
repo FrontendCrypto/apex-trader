@@ -1,11 +1,11 @@
 <template>
     <div class="chart-container">
-        <div class="button-group">
+        <!-- <div class="button-group">
             <button @click="setTimeframe('1d')" :class="['button', { active: timeframe === '1d' }]">1 Day</button>
             <button @click="setTimeframe('1w')" :class="['button', { active: timeframe === '1w' }]">1 Week</button>
             <button @click="setTimeframe('1m')" :class="['button', { active: timeframe === '1m' }]">1 Month</button>
-        </div>
-        <highcharts :options="chartOptions"></highcharts>
+        </div> -->
+        <highcharts class="price-chart" :options="chartOptions"></highcharts>
     </div>
 </template>
   
@@ -13,10 +13,12 @@
 import { Chart } from 'highcharts-vue';
 import Highcharts from 'highcharts';
 import HighchartsStock from 'highcharts/modules/stock';
+import HighchartsRangeSelector from 'highcharts/modules/stock';
+// import HighchartsAccessibility from 'highcharts/modules/accessibility';
 
 HighchartsStock(Highcharts);
-
-import { getRandomData } from '../helpers/utils';
+HighchartsRangeSelector(Highcharts);
+// HighchartsAccessibility(Highcharts);
 
 export default {
     components: {
@@ -26,104 +28,189 @@ export default {
         return {
             chartOptions: {
                 chart: {
-                    type: 'candlestick',
-                    backgroundColor: '#131722',
-                    // style: {
-                    //     fontFamily: 'Arial, sans-serif',
-                    // },
+                    type: 'stock',
+                    marginBottom: 16,
+                    spacing: [0, 0, 0, 0]
                 },
-                title: null,
+                rangeSelector: {
+                    selected: 2, // Set the initial range selection (0 = all, 1 = 1 month, 2 = 3 months, etc.)
+                    inputPosition: {
+                        align: 'right'
+                    }
+                },
+                navigator: {
+                    enabled: true,
+                },
+                title: {
+                    text: 'BTC-USD Price (Kraken)',
+                    style: {
+                        color: 'rgb(204, 208, 220)',
+                    },
+                },
                 plotOptions: {
                     candlestick: {
                         color: 'rgba(173, 155, 227, 1)',
                         upColor: 'rgba(118, 209, 170, 1)',
                         lineColor: 'rgba(173, 155, 227, 1)',
                         upLineColor: 'rgba(118, 209, 170, 1)',
-                        // ...
                     },
                 },
                 xAxis: {
                     type: 'datetime',
-                },
-                yAxis: {
-                    title: {
-                        text: 'Price',
-                        style: {
-                            color: 'rgb(204, 208, 220)',
-                        },
-                    },
-                    gridLineColor: 'rgba(117, 134, 150, 0.5)',
                     labels: {
                         style: {
                             color: 'rgb(204, 208, 220)',
                         },
                     },
+                    minRange: 30 * 24 * 3600 * 1000, // Set the minimum range to 30 days
+                    min: Date.UTC(2023, 0, 15) - (60 * 24 * 3600 * 1000), // Set the minimum value to 60 days ago
+                    max: Date.UTC(2023, 0, 15), // Set the maximum value to January 20, 2023
                 },
-                series: [
+                yAxis: [
                     {
-                        name: 'BTC-USD',
-                        type: 'candlestick',
-                        data: [],
-                        upColor: 'rgba(118, 209, 170, 1)',
-                        color: 'rgba(173, 155, 227, 1)',
+                        title: {
+                            text: 'Price',
+                        },
+                        opposite: true,
+                        labels: {
+                            x: -40,
+                            style: {
+                                color: 'rgb(204, 208, 220)',
+                            },
+                        },
                     },
-                ],
+                    {
+                        title: {
+                            text: 'Volume',
+                        },
+                        opposite: true,
+                        labels: {
+                            style: {
+                                color: 'rgb(204, 208, 220)',
+                            },
+                        },
+                    }],
+                series: [{
+                    name: 'BTC-USD',
+                    type: 'candlestick',
+                    data: [],
+                    dataGrouping: {
+                        units: [
+                            ['week', [1]], // Group data by week
+                            ['month', [1, 2, 3, 4, 6]] // Group data by month
+                        ]
+                    },
+                    upColor: 'red',
+                    color: 'rgba(173, 155, 227, 1)',
+                }, {
+                    name: 'Volume',
+                    type: 'column',
+                    data: [],
+                    yAxis: 1,
+                    color: 'rgba(173, 155, 227, 0.5)',
+                    dataGrouping: {
+                        units: [
+                            ['week', [1]],
+                            ['month', [1, 2, 3, 4, 6]]
+                        ]
+                    },
+                }],
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    enabled: true
+                },
+                legend: {
+                    enabled: false
+                }
             },
             timeframe: '1w',
         };
     },
     mounted() {
-        this.generateRandomData();
+        this.loadData();
+        const style = document.createElement('style');
+        style.innerHTML = '.highcharts-grid-line { stroke: rgba(255, 255, 255, 0.05) !important; }';
+        document.head.appendChild(style);
     },
     methods: {
-        generateRandomData() {
-            const data = getRandomData(60);
-            this.chartOptions.series[0].data = data;
+        loadData() {
+            const timeframes = ['1d'];
+            const baseUrl = 'src/data/OHCLVT/XBTUSD/';
+            const fileExtensions = ['1440.csv'];
+
+            const promises = timeframes.map((timeframe, index) => {
+                const url = baseUrl + 'XBTUSD_' + fileExtensions[index];
+                return fetch(url)
+                    .then(response => response.text())
+                    .then(data => {
+                        const lines = data.split('\n');
+                        const candlestickData = [];
+                        const volumeData = [];
+
+                        lines.forEach(line => {
+                            if (line.trim() !== '') {
+                                const [timestamp, open, high, low, close, volume, trades] = line.split(',');
+                                const parsedTimestamp = parseInt(timestamp) * 1000; // Convert Unix timestamp to milliseconds
+                                const parsedOpen = parseFloat(open);
+                                const parsedHigh = parseFloat(high);
+                                const parsedLow = parseFloat(low);
+                                const parsedClose = parseFloat(close);
+                                const parsedVolume = parseFloat(volume);
+                                candlestickData.push([parsedTimestamp, parsedOpen, parsedHigh, parsedLow, parsedClose]);
+                                volumeData.push([parsedTimestamp, parsedVolume]);
+                            }
+                        });
+
+                        return [{
+                            name: 'XBTUSD ' + timeframe.toUpperCase(),
+                            type: 'candlestick',
+                            data: candlestickData
+                        }, {
+                            name: 'Volume',
+                            type: 'column',
+                            data: volumeData,
+                        }];
+                    });
+            });
+
+            Promise.all(promises)
+                .then(seriesData => {
+                    this.chartOptions.series = seriesData.flat();
+                    console.log(seriesData)
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
         },
         setTimeframe(selectedTimeframe) {
             this.timeframe = selectedTimeframe;
-            this.generateRandomData();
+            this.loadData();
         },
     },
 };
 </script>
   
-<style scoped lang="scss">
-@import '../assets/variables';
+<style scoped>
+.price-chart {
+    width: 100%;
+    height: 100%;
+}
+
+.highcharts-background {
+    background-color: transparent !important;
+    fill: transparent !important;
+}
 
 .chart-container {
-    background-color: #262d38;
-    color: rgb(204, 208, 220);
-    //   padding: 20px;
-}
-
-.button-container {
-    margin-bottom: 20px;
-}
-
-.chart-button {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: none;
-    color: rgb(204, 208, 220);
-    padding: 10px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.chart-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.button-group {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 16px;
     width: 100%;
+    height: 100%;
 }
 
 .button {
-    background-color: $button;
-    color: $surfaceContent;
+    background-color: #2d3542;
+    color: rgb(204, 208, 220);
     border: none;
     padding: 8px 16px;
     font-size: 14px;
@@ -134,11 +221,12 @@ export default {
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: $buttonHover;
+        background-color: #39455a;
     }
 
     &.active {
-        background-color: $buttonHover;
+        background-color: #39455a;
     }
 }
 </style>
+  
