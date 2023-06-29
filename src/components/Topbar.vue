@@ -23,6 +23,9 @@
                 <span class="title">Volume ({{ timeframe }}h)</span>
                 <span class="value">$ 6.874.214</span>
             </div>
+            <div class="topbar-item">
+                <TimeframeSelector @timeframe-selected="setTimeframe"></TimeframeSelector>
+            </div>
         </div>
         <div class="right">
             <button class="button settings-button" @click="this.updateSettingsVisibility(true)">
@@ -35,6 +38,7 @@
 <script>
 import Change from './Change.vue'
 import Price from './Price.vue';
+import TimeframeSelector from './TimeframeSelector.vue';
 import { mapGetters, mapMutations } from 'vuex'
 import { ChevronRightIcon, Cog8ToothIcon } from '@heroicons/vue/24/solid'
 
@@ -43,7 +47,8 @@ export default {
         Change,
         Price,
         ChevronRightIcon,
-        Cog8ToothIcon
+        Cog8ToothIcon,
+        TimeframeSelector
     },
     computed: {
         ...mapGetters(['timeframe', 'counterpart', 'asset', 'selectedAssetPrice', 'assetIconPath']),

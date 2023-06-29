@@ -1,10 +1,5 @@
 <template>
     <div class="chart-container">
-        <!-- <div class="button-group">
-            <button @click="setTimeframe('1d')" :class="['button', { active: timeframe === '1d' }]">1 Day</button>
-            <button @click="setTimeframe('1w')" :class="['button', { active: timeframe === '1w' }]">1 Week</button>
-            <button @click="setTimeframe('1m')" :class="['button', { active: timeframe === '1m' }]">1 Month</button>
-        </div> -->
         <highcharts class="price-chart" :options="chartOptions"></highcharts>
     </div>
 </template>
@@ -14,6 +9,7 @@ import { Chart } from 'highcharts-vue';
 import Highcharts from 'highcharts';
 import HighchartsStock from 'highcharts/modules/stock';
 import HighchartsRangeSelector from 'highcharts/modules/stock';
+import { mapGetters } from 'vuex';
 // import HighchartsAccessibility from 'highcharts/modules/accessibility';
 
 HighchartsStock(Highcharts);
@@ -24,16 +20,19 @@ export default {
     components: {
         highcharts: Chart,
     },
+    computed: {
+        ...mapGetters(['timeframe']),
+    },
     data() {
         return {
             chartOptions: {
                 chart: {
                     type: 'stock',
                     marginBottom: 16,
-                    spacing: [0, 0, 0, 0]
+                    spacing: [0, 0, 0, 0],
                 },
                 rangeSelector: {
-                    selected: 2, // Set the initial range selection (0 = all, 1 = 1 month, 2 = 3 months, etc.)
+                    selected: 2,
                     inputPosition: {
                         align: 'right'
                     }
@@ -53,7 +52,16 @@ export default {
                         upColor: 'rgba(118, 209, 170, 1)',
                         lineColor: 'rgba(173, 155, 227, 1)',
                         upLineColor: 'rgba(118, 209, 170, 1)',
+                        stemColor: null,
                     },
+                    series: {
+                        states: {
+                            hover: {
+                                enabled: false,
+                                opacity: 1,
+                            }
+                        }
+                    }
                 },
                 xAxis: {
                     type: 'datetime',
@@ -62,15 +70,13 @@ export default {
                             color: 'rgb(204, 208, 220)',
                         },
                     },
-                    minRange: 30 * 24 * 3600 * 1000, // Set the minimum range to 30 days
-                    min: Date.UTC(2023, 0, 15) - (60 * 24 * 3600 * 1000), // Set the minimum value to 60 days ago
-                    max: Date.UTC(2023, 0, 15), // Set the maximum value to January 20, 2023
+                    minRange: 30 * 24 * 3600 * 1000,
+                    min: Date.UTC(2023, 0, 15) - (60 * 24 * 3600 * 1000),
+                    max: Date.UTC(2023, 0, 15),
                 },
                 yAxis: [
                     {
-                        title: {
-                            text: 'Price',
-                        },
+                        title: '',
                         opposite: true,
                         labels: {
                             x: -40,
@@ -80,41 +86,17 @@ export default {
                         },
                     },
                     {
-                        title: {
-                            text: 'Volume',
-                        },
-                        opposite: true,
+                        title: '',
                         labels: {
-                            style: {
-                                color: 'rgb(204, 208, 220)',
-                            },
+                            enabled: false,
                         },
-                    }],
-                series: [{
-                    name: 'BTC-USD',
-                    type: 'candlestick',
-                    data: [],
-                    dataGrouping: {
-                        units: [
-                            ['week', [1]], // Group data by week
-                            ['month', [1, 2, 3, 4, 6]] // Group data by month
-                        ]
-                    },
-                    upColor: 'red',
-                    color: 'rgba(173, 155, 227, 1)',
-                }, {
-                    name: 'Volume',
-                    type: 'column',
-                    data: [],
-                    yAxis: 1,
-                    color: 'rgba(173, 155, 227, 0.5)',
-                    dataGrouping: {
-                        units: [
-                            ['week', [1]],
-                            ['month', [1, 2, 3, 4, 6]]
-                        ]
-                    },
-                }],
+                        top: '80%',
+                        height: '20%',
+                        offset: 0,
+                        lineWidth: 2,
+                    }
+                ],
+                series: [],
                 credits: {
                     enabled: false
                 },
@@ -126,6 +108,22 @@ export default {
                 }
             },
             timeframe: '1w',
+            seriesOptions: {
+                candlestick: {
+                    color: 'rgba(173, 155, 227, 1)',
+                    upColor: 'rgba(118, 209, 170, 1)',
+                    lineColor: 'rgba(173, 155, 227, 1)',
+                    upLineColor: 'rgba(118, 209, 170, 1)',
+                    stemColor: null,
+                },
+                volume: {
+                    color: 'rgba(255, 255, 255, 0.1)',
+                    borderColor: 'transparent',
+                    borderRadius: 0,
+                    borderWidth: 0,
+                    strokeWidth: 0,
+                },
+            },
         };
     },
     mounted() {
@@ -134,9 +132,16 @@ export default {
         style.innerHTML = '.highcharts-grid-line { stroke: rgba(255, 255, 255, 0.05) !important; }';
         document.head.appendChild(style);
     },
+    watch: {
+        timeframe(newTimeframe) {
+            this.loadData(newTimeframe);
+        },
+    },
+
     methods: {
-        loadData() {
-            const timeframes = ['1d'];
+        loadData(selectedTimeframe = null) {
+            const timeframes = [selectedTimeframe || this.timeframe];
+            // const timeframes = ['1d'];
             const baseUrl = 'src/data/OHCLVT/XBTUSD/';
             const fileExtensions = ['1440.csv'];
 
@@ -152,7 +157,7 @@ export default {
                         lines.forEach(line => {
                             if (line.trim() !== '') {
                                 const [timestamp, open, high, low, close, volume, trades] = line.split(',');
-                                const parsedTimestamp = parseInt(timestamp) * 1000; // Convert Unix timestamp to milliseconds
+                                const parsedTimestamp = parseInt(timestamp) * 1000;
                                 const parsedOpen = parseFloat(open);
                                 const parsedHigh = parseFloat(high);
                                 const parsedLow = parseFloat(low);
@@ -163,15 +168,42 @@ export default {
                             }
                         });
 
-                        return [{
-                            name: 'XBTUSD ' + timeframe.toUpperCase(),
-                            type: 'candlestick',
-                            data: candlestickData
-                        }, {
-                            name: 'Volume',
-                            type: 'column',
-                            data: volumeData,
-                        }];
+                        const seriesOptions = [
+                            {
+                                type: 'candlestick',
+                                data: candlestickData,
+                                dataGrouping: {
+                                    units: [
+                                        ['week', [1]],
+                                        ['month', [1, 2, 3, 4, 6]]
+                                    ]
+                                },
+                                color: this.seriesOptions.candlestick.color,
+                                upColor: this.seriesOptions.candlestick.upColor,
+                                lineColor: this.seriesOptions.candlestick.lineColor,
+                                upLineColor: this.seriesOptions.candlestick.upLineColor,
+                                stemColor: this.seriesOptions.candlestick.stemColor,
+                            },
+                            {
+                                name: 'Volume',
+                                type: 'column',
+                                data: volumeData,
+                                yAxis: 1,
+                                dataGrouping: {
+                                    units: [
+                                        ['week', [1]],
+                                        ['month', [1, 2, 3, 4, 6]]
+                                    ]
+                                },
+                                color: this.seriesOptions.volume.color,
+                                borderColor: this.seriesOptions.volume.borderColor,
+                                borderRadius: this.seriesOptions.volume.borderRadius,
+                                borderWidth: this.seriesOptions.volume.borderWidth,
+                                strokeWidth: this.seriesOptions.volume.strokeWidth,
+                            }
+                        ];
+
+                        return seriesOptions;
                     });
             });
 
@@ -185,12 +217,12 @@ export default {
                 });
         },
         setTimeframe(selectedTimeframe) {
-            this.timeframe = selectedTimeframe;
-            this.loadData();
+            this.$store.commit('updateTimeframe', selectedTimeframe);
         },
     },
 };
 </script>
+
   
 <style scoped>
 .price-chart {

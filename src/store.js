@@ -28,8 +28,8 @@ const store = createStore({
       orderbook,
       trades,
       timeframe: {
-        selected: 24,
-        values: [1, 4, 12, 24]
+        selected: '1w',
+        options: ['1d', '1w', '1m'],
       },
       operative: [
         {
@@ -115,6 +115,9 @@ const store = createStore({
     },
     updateBaseCurrency(state, value) {
       state.baseCurrency = value
+    },
+    updateTimeframe(state, selectedTimeframe) {
+      state.timeframe.selected = selectedTimeframe;
     },
   }
 })
